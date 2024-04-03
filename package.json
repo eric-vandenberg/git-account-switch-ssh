@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "description": "Git Account Switch (SSH)",
   "main": "./dist/cli.js",
+  "type": "module",
   "scripts": {
+    "start": "nodemon --watch './lib/**/*.ts' --exec 'node --import=./loader/register.js' ./lib/cli.ts",
+    "create": "yarn build && yarn test",
     "build": "tsc -p .",
-    "build:watch": "tsc-watch -p . --onSuccess ",
-    "start": "yarn build:watch \"node dist/cli.js\"",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "local": "sudo npm i -g && gas",
-    "refresh": "rm -rf ./node_modules ./yarn.lock && yarn"
+    "reset": "rm -rf ./node_modules ./yarn.lock && yarn"
   },
   "bin": {
     "gas": "./dist/cli.js"
@@ -32,8 +32,10 @@
   },
   "devDependencies": {
     "@types/figlet": "^1.5.8",
+    "@types/inquirer": "^9.0.7",
     "@types/node": "^20.12.2",
-    "tsc-watch": "^6.2.0",
+    "nodemon": "^3.1.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.4.3"
   }
 }

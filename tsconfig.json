@@ -1,12 +1,23 @@
 {
   "compilerOptions": {
-    "rootDir": "src",
-    "outDir": "dist",
+    "lib": [
+      "es2023"
+    ],
+    "module": "Node16",
+    "target": "es2022",
     "strict": true,
-    "target": "es6",
-    "module": "commonjs",
-    "sourceMap": true,
     "esModuleInterop": true,
-    "moduleResolution": "node"
-  }
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node16"
+  },
+  "ts-node": {
+    "esm": true
+  },
+  "include": [
+    "./lib/**/*.ts"
+  ],
+  "files": [
+    "./index.d.ts"
+  ]
 }
