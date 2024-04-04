@@ -1,5 +1,5 @@
-import { sshConfigCheck } from './utils/ssh-config-check.js';
+import { ssh_config_check } from './utils/ssh-config-check.js';
 
-export async function sshUserLink(options: any) {
-  await sshConfigCheck();
+export const ssh_user_link = async (options: any) => {
+  await ssh_config_check();
 }

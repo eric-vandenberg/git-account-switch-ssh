@@ -1,56 +1,78 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env node
 
-import { program } from "commander";
-import { Chalk } from "chalk";
-import figlet from "figlet";
-import lolcatjs from 'lolcatjs';
+import { intro, text, isCancel, confirm, cancel, select, spinner, outro } from '@clack/prompts';
+import { textSync } from "figlet";
+import { fromString } from 'lolcatjs';
+import color from 'picocolors';
+import { setTimeout as sleep } from 'node:timers/promises';
 import path from "node:path";
 import fs from "node:fs";
 import os from "node:os";
-import inquirer from "inquirer";
 import { exec } from "node:child_process";
 
-import { sshUserLink } from './ssh-user-link.js';
+import { git_repo_check } from './utils/git-repo-check.js';
+import { ssh_user_link } from './ssh-user-link.js';
 
-lolcatjs.fromString(figlet.textSync('Git Account Switch SSH', {
-  font: 'Small',
-  whitespaceBreak: true
-}));
+const { version } = JSON.parse(fs.readFileSync(new URL('package.json', import.meta.url), 'utf-8'));
 
-program
-  .version("0.0.1")
-  .description("CLI for switching github accounts")
-  .option("-s, --switch", "switch github account")
-  .option("-l, --link", "link git ssh account")
-  .option("-a, --add", "add new github account")
-  .option("-c, --check", "check for current github account")
-  .parse(process.argv);
-
-const options = program.opts();
-
-if (options.link) {
-  (async function () {
-    try {
-      await sshUserLink(options);
-      console.log(`successfully deleted ${path}`);
-    } catch (error: unknown) {
-      console.error('there was an error:', (error as Error).message);
-    }
-  })();
+const on_cancel = async () => {
+  cancel('Operation cancelled.');
+  process.exit(0);
 }
 
-if (!process.argv.slice(2).length) {
-  program.outputHelp();
+async function main() {
+  intro(fromString(textSync('Git Account Switch SSH', {
+    font: 'Small',
+    whitespaceBreak: true
+  })));
+  console.log(`
+    ${color.dim(`create-svelte version ${version}`)}
+  `);
+
+  const name = await text({
+    message: 'What is your name?',
+    placeholder: 'Anonymous',
+  });
+
+  if (isCancel(name)) {
+    cancel('Operation cancelled');
+    return process.exit(0);
+  }
+
+  const shouldContinue = await confirm({
+    message: 'Do you want to continue?',
+  });
+
+  if (isCancel(shouldContinue)) {
+    cancel('Operation cancelled');
+    return process.exit(0);
+  }
+
+  const projectType = await select({
+    message: 'Pick a project type.',
+    options: [
+      { value: 'ts', label: 'TypeScript' },
+      { value: 'js', label: 'JavaScript' },
+      { value: 'coffee', label: 'CoffeeScript', hint: 'oh no' },
+    ],
+  });
+
+  if (isCancel(projectType)) {
+    cancel('Operation cancelled');
+    return process.exit(0);
+  }
+
+  const s = spinner();
+  s.start('Installing via npm');
+
+  await sleep(3000);
+
+  s.stop('Installed via npm');
+
+  const dood = 'eric'
+  const repo = 'fun tings'
+
+  outro(`User ${dood} is all setup for repo ${repo}`);
 }
 
-
-// console.log(currentPath);
-// exec(`cd && cat .ssh/config`, (err, stdout, stderr) => {
-//   if (err) {
-//     console.error(err);
-
-//     return;
-//   }
-
-//   console.log(stdout);
-// });
+main().catch(console.error);

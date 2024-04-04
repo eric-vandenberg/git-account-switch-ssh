@@ -1,21 +1,21 @@
-import { access, readFile, constants } from 'node:fs/promises';
+import { accessSync, readFileSync, constants } from 'node:fs';
 import os from 'node:os';
 import { parse, Directive } from "ssh-config";
-import inquirer from "inquirer";
 
-export async function sshConfigCheck() {
+export const ssh_config_check = async () => {
   try {
     const home = os.homedir();
-    const accessible = await access(`${home}/.ssh/config`, constants.R_OK | constants.W_OK);
-    const file = await readFile(`${home}/.ssh/config`, { encoding: 'utf8' })
+    accessSync(`${home}/.ssh/config`, constants.R_OK | constants.W_OK);
+
+    const file = readFileSync(`${home}/.ssh/config`, { encoding: 'utf8' })
 
     const config = parse(file);
 
     const accounts = config.map((account: any) => {
-      const host = (account as Directive).value;
+      const host = (account as Directive).value as string;
 
       if (host) {
-        const compute = config.compute('github.com');
+        const compute = config.compute(host);
 
         console.log('~~~~~~~~~~~~~');
         console.log((account as Directive).value)
@@ -28,8 +28,6 @@ export async function sshConfigCheck() {
         return host;
       }
     });
-
-    inquirer.prompt([{ type: 'list', name: 'account(s)', message: `Which account would you like to set for this repo?`, choices: [...accounts, 'Or, setup a new account with SSH'] }])
   } catch (error) {
     console.error("Error occurred while reading the directory!", error);
   }
