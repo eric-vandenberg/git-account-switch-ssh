@@ -12,22 +12,37 @@ import { exec } from "node:child_process";
 
 import { git_repo_check } from './utils/git-repo-check.js';
 import { ssh_user_link } from './ssh-user-link.js';
+import { ssh_config_check } from './utils/ssh-config-check.js';
+import { ssh_keys_check } from './utils/ssh-keys-check.js';
+import { git_user_check } from './utils/git-user-check.js';
 
-const { version } = JSON.parse(fs.readFileSync(new URL('package.json', import.meta.url), 'utf-8'));
+const { version } = JSON.parse(fs.readFileSync(new URL('../package.json', import.meta.url), 'utf-8'));
 
-const on_cancel = async () => {
-  cancel('Operation cancelled.');
-  process.exit(0);
-}
-
-async function main() {
-  intro(fromString(textSync('Git Account Switch SSH', {
+const banner = async () => {
+  fromString(textSync('Git Account Switch SSH', {
     font: 'Small',
     whitespaceBreak: true
-  })));
+  }))
+
   console.log(`
-    ${color.dim(`create-svelte version ${version}`)}
+    ${color.dim(`version ${version}`)}
   `);
+}
+
+const init = async () => {
+  const accounts = await ssh_config_check();
+  const keys = await ssh_keys_check();
+  const gitrepo = await git_repo_check();
+  const gitconfig = await git_user_check(gitrepo);
+
+  console.log('accounts : ', accounts);
+  console.log('keys : ', keys);
+  console.log('gitrepo : ', gitrepo);
+  console.log('gitconfig : ', gitconfig);
+}
+
+const main = async () => {
+  intro('Welcome!');
 
   const name = await text({
     message: 'What is your name?',
@@ -75,4 +90,4 @@ async function main() {
   outro(`User ${dood} is all setup for repo ${repo}`);
 }
 
-main().catch(console.error);
+banner().then(() => init().then(() => main().catch(console.error)));
