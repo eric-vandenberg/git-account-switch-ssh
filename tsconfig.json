@@ -1,23 +1,16 @@
 {
   "compilerOptions": {
-    "lib": [
-      "es2023"
-    ],
-    "module": "Node16",
-    "target": "es2022",
+    "module": "ESNext",
+    "target": "ESNext",
+    "declaration": true,
+    "moduleResolution": "node",
+    "emitDeclarationOnly": true,
     "strict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node16"
-  },
-  "ts-node": {
-    "esm": true
-  },
-  "include": [
-    "./lib/**/*.ts"
-  ],
-  "files": [
-    "./index.d.ts"
-  ]
+    "allowJs": true,
+    "types": [
+      "node"
+    ]
+  }
 }

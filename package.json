@@ -3,11 +3,9 @@
   "version": "1.0.0",
   "description": "Git Account Switch (SSH)",
   "main": "./dist/cli.js",
-  "type": "module",
   "scripts": {
-    "start": "nodemon --watch './lib/**/*.ts' --exec 'node --import=./loader/register.js' ./lib/cli.ts",
-    "create": "yarn build && yarn test",
-    "build": "tsc -p .",
+    "start": "jiti ./lib/cli.ts",
+    "build": "tsup ./lib/",
     "local": "sudo npm i -g && gas",
     "reset": "rm -rf ./node_modules ./yarn.lock && yarn"
   },
@@ -16,6 +14,8 @@
   },
   "keywords": [
     "cli",
+    "git",
+    "ssh",
     "npmtool"
   ],
   "author": "Eric Vandenberg <contact@ericvandenberg.com>",
@@ -23,19 +23,18 @@
   "repository": "https://github.com/Eric-Vandenberg/git-account-switch-ssh",
   "homepage": "https://github.com/Eric-Vandenberg/git-account-switch-ssh#readme",
   "dependencies": {
-    "chalk": "^5.3.0",
-    "commander": "^12.0.0",
+    "@clack/core": "^0.3.4",
+    "@clack/prompts": "^0.7.0",
     "figlet": "^1.7.0",
-    "inquirer": "^9.2.17",
     "lolcatjs": "^2.4.3",
+    "picocolors": "^1.0.0",
     "ssh-config": "^4.4.2"
   },
   "devDependencies": {
     "@types/figlet": "^1.5.8",
-    "@types/inquirer": "^9.0.7",
     "@types/node": "^20.12.2",
-    "nodemon": "^3.1.0",
-    "ts-node": "^10.9.2",
+    "jiti": "^1.21.0",
+    "tsup": "^8.0.2",
     "typescript": "^5.4.3"
   }
 }
