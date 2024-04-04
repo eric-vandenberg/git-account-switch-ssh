@@ -2,7 +2,7 @@ import { accessSync, readFileSync, constants } from 'node:fs';
 import os from 'node:os';
 import { parse, Directive } from "ssh-config";
 
-export const ssh_config_check = async () => {
+export const ssh_config_check = async (): Promise<(Record<string, string | string[]> | undefined)[]> => {
   try {
     const home = os.homedir();
     accessSync(`${home}/.ssh/config`, constants.R_OK | constants.W_OK);
@@ -11,24 +11,20 @@ export const ssh_config_check = async () => {
 
     const config = parse(file);
 
-    const accounts = config.map((account: any) => {
+    const accounts = [...config].map((account: any) => {
       const host = (account as Directive).value as string;
 
       if (host) {
         const compute = config.compute(host);
 
-        console.log('~~~~~~~~~~~~~');
-        console.log((account as Directive).value)
-        console.log('~~~~~~~~~~~~~');
-        console.log(JSON.stringify(config, null, 2));
-        console.log('~~~~~~~~~~~~~');
-        console.log(compute);
-        console.log('~~~~~~~~~~~~~');
-
-        return host;
+        return compute;
       }
     });
+
+    return accounts;
   } catch (error) {
     console.error("Error occurred while reading the directory!", error);
+
+    return [undefined];
   }
 }
