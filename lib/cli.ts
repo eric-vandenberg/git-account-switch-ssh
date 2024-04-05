@@ -3,20 +3,16 @@
 import { intro, text, isCancel, confirm, cancel, select, spinner, outro } from '@clack/prompts';
 import { textSync } from "figlet";
 import { fromString } from 'lolcatjs';
-import color from 'picocolors';
 import { setTimeout as sleep } from 'node:timers/promises';
-import path from "node:path";
-import fs from "node:fs";
-import os from "node:os";
-import { exec } from "node:child_process";
+import color from 'picocolors';
+import { version } from '../package.json';
 
 import { git_repo_check } from './utils/git-repo-check.js';
-import { ssh_user_link } from './ssh-user-link.js';
+import { ssh_config_backup } from './utils/ssh-config-backup.js';
 import { ssh_config_check } from './utils/ssh-config-check.js';
 import { ssh_keys_check } from './utils/ssh-keys-check.js';
 import { git_user_check } from './utils/git-user-check.js';
-
-const { version } = JSON.parse(fs.readFileSync(new URL('../package.json', import.meta.url), 'utf-8'));
+import { ssh_user_check } from './utils/ssh-user-check.js';
 
 const banner = async () => {
   fromString(textSync('Git Account Switch SSH', {
@@ -35,14 +31,37 @@ const init = async () => {
   const gitrepo = await git_repo_check();
   const gitconfig = await git_user_check(gitrepo);
 
-  console.log('accounts : ', accounts);
-  console.log('keys : ', keys);
-  console.log('gitrepo : ', gitrepo);
-  console.log('gitconfig : ', gitconfig);
+  // console.log('accounts : ', accounts);
+  // console.log('keys : ', keys);
+  // console.log('gitrepo : ', gitrepo);
+  // console.log('gitconfig : ', gitconfig);
+
+  await ssh_config_backup();
+
+  return {
+    accounts,
+    keys,
+    gitrepo,
+    gitconfig,
+  }
 }
 
-const main = async () => {
+const main = async (prechecks: {
+  accounts: any;
+  keys: any;
+  gitrepo: any;
+  gitconfig: any;
+}) => {
   intro('Welcome!');
+
+  console.log('prechecks : ', prechecks);
+
+  const s = spinner();
+  s.start('Checking for existing SSH users');
+
+  const users = await ssh_user_check(prechecks.accounts);
+
+  s.stop(users.length ? `User ${users[0]} found!` : 'No users found. Let\'s set one up!');
 
   const name = await text({
     message: 'What is your name?',
@@ -77,7 +96,6 @@ const main = async () => {
     return process.exit(0);
   }
 
-  const s = spinner();
   s.start('Installing via npm');
 
   await sleep(3000);
@@ -90,4 +108,4 @@ const main = async () => {
   outro(`User ${dood} is all setup for repo ${repo}`);
 }
 
-banner().then(() => init().then(() => main().catch(console.error)));
+banner().then(() => init().then((prechecks) => main(prechecks).catch(console.error)));
