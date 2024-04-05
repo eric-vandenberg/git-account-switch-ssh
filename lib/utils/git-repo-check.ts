@@ -1,14 +1,14 @@
 import { execSync } from 'node:child_process';
-import * as p from '@clack/prompts';
 
 export const git_repo_check = async () => {
-  let path = ".";
+  let path = '.';
+
   try {
-    path = execSync("git rev-parse --show-toplevel").toString().trim();
+    path = execSync('git rev-parse --show-toplevel', { stdio: [] }).toString().trim();
+
+    return path;
   } catch (err: unknown) {
-    p.log.warn(
-      "Could not find git root. If in a --bare repository, ignore this warning."
-    );
+
+    return path;
   }
-  return path;
 }
