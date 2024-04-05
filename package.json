@@ -2,7 +2,7 @@
   "name": "git-account-switch-ssh",
   "version": "1.0.0",
   "description": "Git Account Switch (SSH)",
-  "main": "./dist/cli.js",
+  "main": "dist/cli.js",
   "scripts": {
     "start": "jiti ./lib/cli.ts",
     "build": "tsup ./lib/",
@@ -20,7 +20,10 @@
   ],
   "author": "Eric Vandenberg <contact@ericvandenberg.com>",
   "license": "MIT",
-  "repository": "https://github.com/Eric-Vandenberg/git-account-switch-ssh",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Eric-Vandenberg/git-account-switch-ssh"
+  },
   "homepage": "https://github.com/Eric-Vandenberg/git-account-switch-ssh#readme",
   "dependencies": {
     "@clack/core": "^0.3.4",
