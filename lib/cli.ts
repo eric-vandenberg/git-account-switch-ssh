@@ -12,7 +12,9 @@ import { ssh_config_backup } from './utils/ssh-config-backup.js';
 import { ssh_config_check } from './utils/ssh-config-check.js';
 import { ssh_keys_check } from './utils/ssh-keys-check.js';
 import { git_user_check } from './utils/git-user-check.js';
-import { ssh_user_check } from './utils/ssh-user-check.js';
+import { IEntry, ssh_user_check } from './utils/ssh-user-check.js';
+
+import { ssh_user_link } from './ssh-user-link.js';
 
 const banner = async () => {
   fromString(textSync('Git Account Switch SSH', {
@@ -31,11 +33,6 @@ const init = async () => {
   const gitrepo = await git_repo_check();
   const gitconfig = await git_user_check(gitrepo);
 
-  // console.log('accounts : ', accounts);
-  // console.log('keys : ', keys);
-  // console.log('gitrepo : ', gitrepo);
-  // console.log('gitconfig : ', gitconfig);
-
   await ssh_config_backup();
 
   return {
@@ -48,10 +45,12 @@ const init = async () => {
 
 const main = async (prechecks: {
   accounts: any;
-  keys: any;
-  gitrepo: any;
-  gitconfig: any;
+  keys: string[];
+  gitrepo: string;
+  gitconfig: { global: { email?: string; user?: string; }, local: { email?: string; user?: string; } };
 }) => {
+  let linked_user;
+  let project;
   intro('Welcome!');
 
   console.log('prechecks : ', prechecks);
@@ -59,53 +58,35 @@ const main = async (prechecks: {
   const s = spinner();
   s.start('Checking for existing SSH users');
 
-  const users = await ssh_user_check(prechecks.accounts);
+  const users: IEntry[] = await ssh_user_check(prechecks.accounts);
 
-  s.stop(users.length ? `User ${users[0]} found!` : 'No users found. Let\'s set one up!');
+  s.stop(users.length ? `Found ${users.length} users!` : 'No users found. Let\'s set one up!');
 
-  const name = await text({
-    message: 'What is your name?',
-    placeholder: 'Anonymous',
-  });
+  // link a ssh user to an existing git repo
+  if (prechecks.gitrepo.length > 1) {
+    project = prechecks.gitrepo.split('/').pop() ?? '';
 
-  if (isCancel(name)) {
-    cancel('Operation cancelled');
-    return process.exit(0);
+    linked_user = await ssh_user_link(project, users);
   }
 
-  const shouldContinue = await confirm({
-    message: 'Do you want to continue?',
-  });
+  // clone a new repo with a specified ssh user
+  if (prechecks.gitrepo.length === 1) {
+    const name = await text({
+      message: 'What is the repo url you want to clone?',
+      placeholder: 'e.g. git@github.com:eric-vandenberg/git-account-switch-ssh.git',
+    });
 
-  if (isCancel(shouldContinue)) {
-    cancel('Operation cancelled');
-    return process.exit(0);
+    if (isCancel(name)) {
+      cancel('Operation cancelled');
+      return process.exit(0);
+    }
+
+    project = name.split('/').pop()?.replace('.git', '') ?? '';
+
+    linked_user = await ssh_user_link(project, users);
   }
 
-  const projectType = await select({
-    message: 'Pick a project type.',
-    options: [
-      { value: 'ts', label: 'TypeScript' },
-      { value: 'js', label: 'JavaScript' },
-      { value: 'coffee', label: 'CoffeeScript', hint: 'oh no' },
-    ],
-  });
-
-  if (isCancel(projectType)) {
-    cancel('Operation cancelled');
-    return process.exit(0);
-  }
-
-  s.start('Installing via npm');
-
-  await sleep(3000);
-
-  s.stop('Installed via npm');
-
-  const dood = 'eric'
-  const repo = 'fun tings'
-
-  outro(`User ${dood} is all setup for repo ${repo}`);
+  outro(`User ${linked_user} is all setup for repo ${project}`);
 }
 
 banner().then(() => init().then((prechecks) => main(prechecks).catch(console.error)));
