@@ -14,8 +14,6 @@ export const ssh_config_backup = async (): Promise<void> => {
     if (!backup_exists) {
       const file = readFileSync(`${home}/.ssh/config`, { encoding: 'utf-8' });
 
-      console.log('backed up');
-
       writeFileSync(`${home}/.ssh/config_backup`, file);
     }
   } catch (err: unknown) {
