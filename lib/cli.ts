@@ -15,6 +15,7 @@ import { git_user_check } from './utils/git-user-check.js';
 import { IEntry, ssh_user_check } from './utils/ssh-user-check.js';
 
 import { ssh_user_link } from './ssh-user-link.js';
+import SSHConfig from 'ssh-config';
 
 const banner = async () => {
   fromString(textSync('Git Account Switch SSH', {
@@ -28,7 +29,7 @@ const banner = async () => {
 }
 
 const init = async () => {
-  const accounts = await ssh_config_check();
+  const { config, accounts } = await ssh_config_check();
   const keys = await ssh_keys_check();
   const gitrepo = await git_repo_check();
   const gitconfig = await git_user_check(gitrepo);
@@ -36,6 +37,7 @@ const init = async () => {
   await ssh_config_backup();
 
   return {
+    config,
     accounts,
     keys,
     gitrepo,
@@ -44,6 +46,7 @@ const init = async () => {
 }
 
 const main = async (prechecks: {
+  config: SSHConfig,
   accounts: any;
   keys: string[];
   gitrepo: string;
@@ -73,7 +76,7 @@ const main = async (prechecks: {
   if (prechecks.gitrepo.length === 1) {
     const name = await text({
       message: 'What is the repo url you want to clone?',
-      placeholder: 'e.g. git@github.com:eric-vandenberg/git-account-switch-ssh.git',
+      placeholder: 'e.g. git@github.com:organization/repository.git',
     });
 
     if (isCancel(name)) {
