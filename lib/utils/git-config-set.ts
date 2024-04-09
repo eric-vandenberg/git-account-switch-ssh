@@ -13,12 +13,12 @@ export const git_config_set = async (username: string) => {
     const section = accounts.find((account: Record<string, string | string[]> | undefined) => account?.User === username);
 
     if (record) {
-      execSync(`git config user.name ${record.name}`, { stdio: [] });
-      execSync(`git config user.email ${record.email}`, { stdio: [] });
+      execSync(`git config user.name "${record.name}"`, { stdio: [] });
+      execSync(`git config user.email "${record.email}"`, { stdio: [] });
     }
 
     if (section) {
-      execSync(`git config core.sshCommand "ssh -i ${section.IdentityFile[0]} -F /dev/null"`)
+      execSync(`git config core.sshCommand "ssh -o IdentitiesOnly=yes -i ${section.IdentityFile[0]} -F /dev/null"`)
     }
   } catch (err: unknown) {
 
