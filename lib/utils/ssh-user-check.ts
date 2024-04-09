@@ -1,15 +1,9 @@
 import { exec, ExecException } from 'node:child_process';
 import { promisify } from 'node:util';
 
-const execAsync = promisify(exec);
+import { IEntry } from '../types/entry.js';
 
-export interface IEntry {
-  Host: string;
-  User?: string;
-  AddKeysToAgent?: string;
-  UseKeychain?: string;
-  IdentityFile?: string[];
-}
+const execAsync = promisify(exec);
 
 export const ssh_user_check = async (accounts: { Host: string }[]): Promise<IEntry[]> => {
   const users = [];

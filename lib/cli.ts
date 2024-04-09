@@ -5,17 +5,19 @@ import { textSync } from "figlet";
 import { fromString } from 'lolcatjs';
 import { setTimeout as sleep } from 'node:timers/promises';
 import color from 'picocolors';
-import { version } from '../package.json';
+import SSHConfig from 'ssh-config';
 
+import { version } from '../package.json';
+import { ssh_user_link } from './ssh-user-link.js';
+import { IEntry } from './types/entry.js';
 import { git_repo_check } from './utils/git-repo-check.js';
 import { ssh_config_backup } from './utils/ssh-config-backup.js';
 import { ssh_config_check } from './utils/ssh-config-check.js';
 import { ssh_keys_check } from './utils/ssh-keys-check.js';
 import { git_user_check } from './utils/git-user-check.js';
-import { IEntry, ssh_user_check } from './utils/ssh-user-check.js';
+import { ssh_user_check } from './utils/ssh-user-check.js';
 
-import { ssh_user_link } from './ssh-user-link.js';
-import SSHConfig from 'ssh-config';
+
 
 const banner = async () => {
   fromString(textSync('Git Account Switch SSH', {
@@ -46,7 +48,7 @@ const init = async () => {
 }
 
 const main = async (prechecks: {
-  config: SSHConfig,
+  config?: SSHConfig,
   accounts: any;
   keys: string[];
   gitrepo: string;
@@ -62,6 +64,7 @@ const main = async (prechecks: {
   s.start('Checking for existing SSH users');
 
   const users: IEntry[] = await ssh_user_check(prechecks.accounts);
+  // const users: IEntry[] = [];
 
   s.stop(users.length ? `Found ${users.length} users!` : 'No users found. Let\'s set one up!');
 
@@ -69,7 +72,7 @@ const main = async (prechecks: {
   if (prechecks.gitrepo.length > 1) {
     project = prechecks.gitrepo.split('/').pop() ?? '';
 
-    linked_user = await ssh_user_link(project, users);
+    linked_user = await ssh_user_link({ project, users, gitconfig: prechecks.gitconfig });
   }
 
   // clone a new repo with a specified ssh user
@@ -86,7 +89,7 @@ const main = async (prechecks: {
 
     project = name.split('/').pop()?.replace('.git', '') ?? '';
 
-    linked_user = await ssh_user_link(project, users);
+    linked_user = await ssh_user_link({ project, users, gitconfig: prechecks.gitconfig });
   }
 
   outro(`User ${linked_user} is all setup for repo ${project}`);
