@@ -7,6 +7,8 @@ import { IEntry } from './types/entry.js';
 import { gas_cache_check } from './utils/gas-cache-check.js';
 import { gas_cache_create } from './utils/gas-cache-create.js';
 import { git_config_set } from './utils/git-config-set.js';
+import { ssh_keys_create } from './utils/ssh-keys-create.js';
+import { execSync } from 'node:child_process';
 
 interface IOptions {
   project: string;
@@ -89,7 +91,7 @@ export const ssh_user_link = async (opts: IOptions) => {
       }
     })
 
-    writeFileSync(`${os.homedir()}/.ssh/config`, SSHConfig.stringify(rebuilt_config), { encoding: 'utf-8' })
+    writeFileSync(`${os.homedir()}/.ssh/config`, SSHConfig.stringify(rebuilt_config), { encoding: 'utf-8' });
 
     await git_config_set(username);
 
@@ -152,6 +154,33 @@ export const ssh_user_link = async (opts: IOptions) => {
 
   if (!existing_record) {
     await gas_cache_create(cache_entry);
+  }
+
+  const key = await ssh_keys_create(questions);
+
+  if (!!key) {
+    const existing_config = new SSHConfig();
+
+    opts.users.forEach((u: IEntry) => {
+      existing_config.append({
+        ...u,
+      });
+    })
+
+    existing_config.append({
+      Host: `github.com-${questions.username}`,
+      AddKeysToAgent: 'yes',
+      UseKeychain: 'yes',
+      IdentityFile: [key],
+      User: questions.username,
+      Hostname: 'github.com'
+    });
+
+    writeFileSync(`${os.homedir()}/.ssh/config`, SSHConfig.stringify(existing_config), { encoding: 'utf-8' });
+
+    execSync(`ssh-add ${key}`);
+
+    await git_config_set(questions.username);
   }
 
   return questions.username;
