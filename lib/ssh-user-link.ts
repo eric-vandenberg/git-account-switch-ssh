@@ -1,9 +1,12 @@
+import os from 'node:os';
+import { writeFileSync } from 'node:fs';
+import SSHConfig from 'ssh-config';
 import { cancel, confirm, group, isCancel, log, password, select, text } from '@clack/prompts';
 
 import { IEntry } from './types/entry.js';
 import { gas_cache_check } from './utils/gas-cache-check.js';
 import { gas_cache_create } from './utils/gas-cache-create.js';
-
+import { git_config_set } from './utils/git-config-set.js';
 
 interface IOptions {
   project: string;
@@ -67,6 +70,28 @@ export const ssh_user_link = async (opts: IOptions) => {
         email: retro.email,
       })
     }
+
+    const user_index = options.findIndex((opt) => opt.value === username);
+
+    const rebuilt_config = new SSHConfig();
+
+    opts.users.forEach((u: IEntry, i: number) => {
+      if (i === user_index) {
+        rebuilt_config.append({
+          ...u,
+          HostName: 'github.com',
+          User: username,
+        });
+      } else {
+        rebuilt_config.append({
+          ...u,
+        });
+      }
+    })
+
+    writeFileSync(`${os.homedir()}/.ssh/config`, SSHConfig.stringify(rebuilt_config), { encoding: 'utf-8' })
+
+    await git_config_set(username);
 
     return username;
   }

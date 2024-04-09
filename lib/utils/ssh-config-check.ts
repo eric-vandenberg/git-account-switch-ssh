@@ -7,7 +7,7 @@ export const ssh_config_check = async (): Promise<{ config?: SSHConfig; accounts
     const home = os.homedir();
     accessSync(`${home}/.ssh/config`, constants.R_OK | constants.W_OK);
 
-    const file = readFileSync(`${home}/.ssh/config`, { encoding: 'utf-8' })
+    const file = readFileSync(`${home}/.ssh/config`, { encoding: 'utf-8' });
 
     const config = parse(file);
 
