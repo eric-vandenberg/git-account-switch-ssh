@@ -16,7 +16,7 @@ interface IOptions {
   gitconfig: { global: { email?: string; user?: string; }, local: { email?: string; user?: string; } };
 }
 
-export const ssh_user_link = async (opts: IOptions) => {
+export const ssh_user_link = async (opts: IOptions): Promise<string> => {
   let username: string;
   const home = os.homedir();
   const options = opts.users.map((user) => ({ value: user.User as string, label: user.User as string }));
@@ -62,7 +62,7 @@ export const ssh_user_link = async (opts: IOptions) => {
         {
           onCancel: () => {
             cancel('Operation cancelled');
-            process.exit(1)
+            process.exit(0)
           }
         }
       );
@@ -128,7 +128,7 @@ export const ssh_user_link = async (opts: IOptions) => {
     {
       onCancel: () => {
         cancel('Operation cancelled');
-        process.exit(1)
+        process.exit(0)
       }
     }
   );

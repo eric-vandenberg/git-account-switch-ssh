@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { intro, text, isCancel, confirm, cancel, select, spinner, outro } from '@clack/prompts';
+import { intro, text, isCancel, cancel, spinner, outro } from '@clack/prompts';
 import { textSync } from "figlet";
 import { fromString } from 'lolcatjs';
 import { setTimeout as sleep } from 'node:timers/promises';
@@ -9,6 +9,7 @@ import SSHConfig from 'ssh-config';
 
 import { version } from '../package.json';
 import { ssh_user_link } from './ssh-user-link.js';
+import { clone_repo_user_link } from './clone-repo-user-link.js';
 import { IEntry } from './types/entry.js';
 import { git_repo_check } from './utils/git-repo-check.js';
 import { ssh_config_backup } from './utils/ssh-config-backup.js';
@@ -16,8 +17,6 @@ import { ssh_config_check } from './utils/ssh-config-check.js';
 import { ssh_keys_check } from './utils/ssh-keys-check.js';
 import { git_user_check } from './utils/git-user-check.js';
 import { ssh_user_check } from './utils/ssh-user-check.js';
-
-
 
 const banner = async () => {
   fromString(textSync('Git Account Switch SSH', {
@@ -49,13 +48,13 @@ const init = async () => {
 
 const main = async (prechecks: {
   config?: SSHConfig,
-  accounts: any;
+  accounts: (Record<string, string | string[]> | undefined)[];
   keys: string[];
   gitrepo: string;
   gitconfig: { global: { email?: string; user?: string; }, local: { email?: string; user?: string; } };
 }) => {
   let linked_user;
-  let project;
+  let project: string = '';
   intro('Welcome!');
 
   console.log('prechecks : ', prechecks);
@@ -63,7 +62,7 @@ const main = async (prechecks: {
   const s = spinner();
   s.start('Checking for existing SSH users');
 
-  const users: IEntry[] = await ssh_user_check(prechecks.accounts);
+  const users: IEntry[] = await ssh_user_check(prechecks.accounts as unknown as IEntry[]);
   // const users: IEntry[] = [];
 
   s.stop(users.length ? `Found ${users.length} users!` : 'No users found. Let\'s set one up!');
@@ -77,19 +76,21 @@ const main = async (prechecks: {
 
   // clone a new repo with a specified ssh user
   if (prechecks.gitrepo.length === 1) {
-    const name = await text({
+    const repository = await text({
       message: 'What is the repo url you want to clone?',
       placeholder: 'e.g. git@github.com:organization/repository.git',
     });
 
-    if (isCancel(name)) {
+    if (isCancel(repository)) {
       cancel('Operation cancelled');
       return process.exit(0);
     }
 
-    project = name.split('/').pop()?.replace('.git', '') ?? '';
+    project = repository.toString().split('/').pop()?.replace('.git', '') ?? '';
 
     linked_user = await ssh_user_link({ project, users, gitconfig: prechecks.gitconfig });
+
+    await clone_repo_user_link(repository.toString(), project, linked_user);
   }
 
   outro(`User ${linked_user} is all setup for repo ${project}`);
