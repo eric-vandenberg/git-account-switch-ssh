@@ -1,5 +1,6 @@
 import os from 'node:os';
 import { writeFileSync } from 'node:fs';
+import { execSync } from 'node:child_process';
 import SSHConfig from 'ssh-config';
 import { cancel, confirm, group, isCancel, log, password, select, text } from '@clack/prompts';
 
@@ -8,7 +9,6 @@ import { gas_cache_check } from './utils/gas-cache-check.js';
 import { gas_cache_create } from './utils/gas-cache-create.js';
 import { git_config_set } from './utils/git-config-set.js';
 import { ssh_keys_create } from './utils/ssh-keys-create.js';
-import { execSync } from 'node:child_process';
 
 interface IOptions {
   project: string;
@@ -18,6 +18,7 @@ interface IOptions {
 
 export const ssh_user_link = async (opts: IOptions) => {
   let username: string;
+  const home = os.homedir();
   const options = opts.users.map((user) => ({ value: user.User as string, label: user.User as string }));
 
   const link = await select({
@@ -81,8 +82,8 @@ export const ssh_user_link = async (opts: IOptions) => {
       if (i === user_index) {
         rebuilt_config.append({
           ...u,
-          HostName: 'github.com',
           User: username,
+          HostName: 'github.com',
         });
       } else {
         rebuilt_config.append({
@@ -91,7 +92,7 @@ export const ssh_user_link = async (opts: IOptions) => {
       }
     })
 
-    writeFileSync(`${os.homedir()}/.ssh/config`, SSHConfig.stringify(rebuilt_config), { encoding: 'utf-8' });
+    writeFileSync(`${home}/.ssh/config`, SSHConfig.stringify(rebuilt_config), { encoding: 'utf-8' });
 
     await git_config_set(username);
 
@@ -173,10 +174,10 @@ export const ssh_user_link = async (opts: IOptions) => {
       UseKeychain: 'yes',
       IdentityFile: [key],
       User: questions.username,
-      Hostname: 'github.com'
+      HostName: 'github.com'
     });
 
-    writeFileSync(`${os.homedir()}/.ssh/config`, SSHConfig.stringify(existing_config), { encoding: 'utf-8' });
+    writeFileSync(`${home}/.ssh/config`, SSHConfig.stringify(existing_config), { encoding: 'utf-8' });
 
     execSync(`ssh-add ${key}`);
 
