@@ -2,7 +2,9 @@ import { accessSync, readFileSync, constants } from 'node:fs';
 import os from 'node:os';
 import SSHConfig, { parse, Directive } from "ssh-config";
 
-export const ssh_config_check = async (): Promise<{ config?: SSHConfig; accounts: (Record<string, string | string[]> | undefined)[] }> => {
+import { IEntry } from '../types/entry.js';
+
+export const ssh_config_check = async (): Promise<IEntry[]> => {
   try {
     const home = os.homedir();
     accessSync(`${home}/.ssh/config`, constants.R_OK | constants.W_OK);
@@ -11,24 +13,22 @@ export const ssh_config_check = async (): Promise<{ config?: SSHConfig; accounts
 
     const config = parse(file);
 
-    const accounts = [...config].map((account: any) => {
+    const accounts: IEntry[] = [];
+
+    for (const account of config) {
       const host = (account as Directive).value as string;
 
       if (host) {
-        const compute = config.compute(host);
+        const compute = config.compute(host) as unknown as IEntry;
 
-        return compute;
+        if (compute.Host) {
+          accounts.push(compute);
+        }
       }
-    });
-
-    return {
-      config,
-      accounts,
     }
+
+    return accounts;
   } catch (error) {
-    return {
-      config: undefined,
-      accounts: [],
-    };
+    return [];
   }
 }

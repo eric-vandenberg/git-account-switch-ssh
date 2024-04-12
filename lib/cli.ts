@@ -5,7 +5,6 @@ import { textSync } from "figlet";
 import { fromString } from 'lolcatjs';
 import { setTimeout as sleep } from 'node:timers/promises';
 import color from 'picocolors';
-import SSHConfig from 'ssh-config';
 
 import { version } from '../package.json';
 import { ssh_user_link } from './ssh-user-link.js';
@@ -30,7 +29,7 @@ const banner = async () => {
 }
 
 const init = async () => {
-  const { config, accounts } = await ssh_config_check();
+  const accounts = await ssh_config_check();
   const keys = await ssh_keys_check();
   const gitrepo = await git_repo_check();
   const gitconfig = await git_user_check(gitrepo);
@@ -38,7 +37,6 @@ const init = async () => {
   await ssh_config_backup();
 
   return {
-    config,
     accounts,
     keys,
     gitrepo,
@@ -47,8 +45,7 @@ const init = async () => {
 }
 
 const main = async (prechecks: {
-  config?: SSHConfig,
-  accounts: (Record<string, string | string[]> | undefined)[];
+  accounts: IEntry[];
   keys: string[];
   gitrepo: string;
   gitconfig: { global: { email?: string; user?: string; }, local: { email?: string; user?: string; } };
@@ -62,8 +59,7 @@ const main = async (prechecks: {
   const s = spinner();
   s.start('Checking for existing SSH users');
 
-  const users: IEntry[] = await ssh_user_check(prechecks.accounts as unknown as IEntry[]);
-  // const users: IEntry[] = [];
+  const users: IEntry[] = await ssh_user_check(prechecks.accounts);
 
   s.stop(users.length ? `Found ${users.length} users!` : 'No users found. Let\'s set one up!');
 
@@ -77,7 +73,7 @@ const main = async (prechecks: {
   // clone a new repo with a specified ssh user
   if (prechecks.gitrepo.length === 1) {
     const repository = await text({
-      message: 'What is the repo url you want to clone?',
+      message: 'Clone which repository?',
       placeholder: 'e.g. git@github.com:organization/repository.git',
     });
 

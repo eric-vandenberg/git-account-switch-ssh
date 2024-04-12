@@ -4,10 +4,12 @@ import { note } from '@clack/prompts';
 import { ssh_config_check } from './utils/ssh-config-check';
 import { git_config_set } from './utils/git-config-set.js';
 
+import { IEntry } from './types/entry.js';
+
 export const clone_repo_user_link = async (repository: string, project: string, username: string) => {
   try {
-    const { accounts } = await ssh_config_check();
-    const entry = accounts.find((account: Record<string, string | string[]> | undefined) => account?.User === username);
+    const accounts = await ssh_config_check();
+    const entry = accounts.find((account: IEntry) => account?.User === username);
 
     if (!!entry && entry.IdentityFile?.[0]) {
       execSync(`GIT_SSH_COMMAND="ssh -o IdentitiesOnly=yes -i ${entry.IdentityFile[0]} -F /dev/null" git clone ${repository}`, { stdio: [] });;

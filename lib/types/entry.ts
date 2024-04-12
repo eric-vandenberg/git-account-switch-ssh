@@ -4,4 +4,5 @@ export interface IEntry {
   AddKeysToAgent?: string;
   UseKeychain?: string;
   IdentityFile?: string[];
+  HostName?: string;
 }

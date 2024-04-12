@@ -1,7 +1,3 @@
-import os from 'node:os';
-import { writeFileSync } from 'node:fs';
-import { execSync } from 'node:child_process';
-import SSHConfig from 'ssh-config';
 import { cancel, confirm, group, isCancel, log, password, select, text } from '@clack/prompts';
 
 import { IEntry } from './types/entry.js';
@@ -9,6 +5,7 @@ import { gas_cache_check } from './utils/gas-cache-check.js';
 import { gas_cache_create } from './utils/gas-cache-create.js';
 import { git_config_set } from './utils/git-config-set.js';
 import { ssh_keys_create } from './utils/ssh-keys-create.js';
+import { ssh_config_overwrite } from './utils/ssh-config-overwrite.js';
 
 interface IOptions {
   project: string;
@@ -18,7 +15,6 @@ interface IOptions {
 
 export const ssh_user_link = async (opts: IOptions): Promise<string> => {
   let username: string;
-  const home = os.homedir();
   const options = opts.users.map((user) => ({ value: user.User as string, label: user.User as string }));
 
   const link = await select({
@@ -74,26 +70,7 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
       })
     }
 
-    const user_index = options.findIndex((opt) => opt.value === username);
-
-    const rebuilt_config = new SSHConfig();
-
-    opts.users.forEach((u: IEntry, i: number) => {
-      if (i === user_index) {
-        rebuilt_config.append({
-          ...u,
-          User: username,
-          HostName: 'github.com',
-        });
-      } else {
-        rebuilt_config.append({
-          ...u,
-        });
-      }
-    })
-
-    writeFileSync(`${home}/.ssh/config`, SSHConfig.stringify(rebuilt_config), { encoding: 'utf-8' });
-
+    await ssh_config_overwrite(opts.users);
     await git_config_set(username);
 
     return username;
@@ -104,7 +81,7 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
       username: () =>
         text({
           message: 'What is the username of the git account you want to add?',
-          placeholder: 'e.g. https://github.com/{username}',
+          placeholder: '(Only Github accounts are supported)',
         }),
 
       name: () =>
@@ -160,27 +137,16 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
   const key = await ssh_keys_create(questions);
 
   if (!!key) {
-    const existing_config = new SSHConfig();
-
-    opts.users.forEach((u: IEntry) => {
-      existing_config.append({
-        ...u,
-      });
-    })
-
-    existing_config.append({
+    const new_entry: Record<string, string | string[]> = {
       Host: `github.com-${questions.username}`,
       AddKeysToAgent: 'yes',
       UseKeychain: 'yes',
       IdentityFile: [key],
       User: questions.username,
       HostName: 'github.com'
-    });
+    };
 
-    writeFileSync(`${home}/.ssh/config`, SSHConfig.stringify(existing_config), { encoding: 'utf-8' });
-
-    execSync(`ssh-add ${key}`);
-
+    await ssh_config_overwrite(opts.users, new_entry);
     await git_config_set(questions.username);
   }
 

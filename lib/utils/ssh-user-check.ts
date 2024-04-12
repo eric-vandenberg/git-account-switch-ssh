@@ -5,7 +5,7 @@ import { IEntry } from '../types/entry.js';
 
 const execAsync = promisify(exec);
 
-export const ssh_user_check = async (accounts: { Host: string }[]): Promise<IEntry[]> => {
+export const ssh_user_check = async (accounts: IEntry[]): Promise<IEntry[]> => {
   const users = [];
 
   for (const account of accounts) {
@@ -24,6 +24,7 @@ export const ssh_user_check = async (accounts: { Host: string }[]): Promise<IEnt
 
         if (username) {
           entry.User = username;
+          entry.HostName = 'github.com';
         }
       }
     }
