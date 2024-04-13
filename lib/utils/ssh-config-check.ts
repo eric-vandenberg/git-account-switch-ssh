@@ -1,6 +1,6 @@
 import { accessSync, readFileSync, constants } from 'node:fs';
 import os from 'node:os';
-import SSHConfig, { parse, Directive } from "ssh-config";
+import { parse, Directive } from "ssh-config";
 
 import { IEntry } from '../types/entry.js';
 
