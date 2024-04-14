@@ -52,7 +52,7 @@ export const git_user_check = async (path: string) => {
   const uregex = /name = (.*?)$/sm
 
   if (!skip_global) {
-    const gconfig = readFileSync(global_path, 'utf-8');
+    const gconfig = readFileSync(global_path, { encoding: 'utf-8' });
     const gemail_match = gconfig.match(eregex);
     const guser_match = gconfig.match(uregex);
     const gemail = gemail_match ? gemail_match[1] : undefined;
@@ -65,7 +65,7 @@ export const git_user_check = async (path: string) => {
   }
 
   if (!skip_local) {
-    const lconfig = readFileSync(local_path, 'utf-8');
+    const lconfig = readFileSync(local_path, { encoding: 'utf-8' });
     const lemail_match = lconfig.match(eregex);
     const luser_match = lconfig.match(uregex);
     const lemail = lemail_match ? lemail_match[1] : undefined;
