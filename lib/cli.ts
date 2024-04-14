@@ -69,11 +69,11 @@ const main = async (prechecks: {
 
   // restore ssh configuration to original
   if (process.argv?.[2] === 'restore') {
-    // const deleted_keys = await ssh_keys_delete(users);
+    const deleted_keys = await ssh_keys_delete(users);
     const restored_config = await ssh_config_restore();
     await gas_cache_delete();
 
-    // log.step(`Removing keys: ${deleted_keys}`);
+    log.step(`Removing keys:\n\n${deleted_keys.join('\n')}`);
 
     log.step(`Restoring ssh config:\n\n${restored_config}`);
 
