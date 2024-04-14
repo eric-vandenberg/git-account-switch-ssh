@@ -20,7 +20,7 @@ export const ssh_config_overwrite = async (users: IEntry[], addl?: Record<string
     if (!!addl && addl.IdentityFile?.[0]) {
       config.append(addl);
 
-      execSync(`ssh-add ${addl.IdentityFile?.[0]}`);
+      execSync(`ssh-add ${addl.IdentityFile?.[0]}`, { stdio: [] });
     }
 
     writeFileSync(`${home}/.ssh/config`, SSHConfig.stringify(config), { encoding: 'utf-8' });
