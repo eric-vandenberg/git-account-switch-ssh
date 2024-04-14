@@ -1,10 +1,14 @@
 import os from 'node:os';
-import { unlinkSync } from 'node:fs';
+import { existsSync, unlinkSync } from 'node:fs';
 
 export const gas_cache_delete = async () => {
   try {
     const home = os.homedir();
-    unlinkSync(`${home}/.gascache.json`);
+    const cache_path = `${home}/.gascache.json`;
+
+    if (existsSync(cache_path)) {
+      unlinkSync(cache_path);
+    }
   } catch (err: unknown) {
     //
   }
