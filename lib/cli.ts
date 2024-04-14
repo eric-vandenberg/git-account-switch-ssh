@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { intro, text, isCancel, cancel, spinner, outro } from '@clack/prompts';
+import { intro, text, isCancel, cancel, spinner, outro, log } from '@clack/prompts';
 import { textSync } from "figlet";
 import { fromString } from 'lolcatjs';
 import { setTimeout as sleep } from 'node:timers/promises';
@@ -16,6 +16,9 @@ import { ssh_config_check } from './utils/ssh-config-check.js';
 import { ssh_keys_check } from './utils/ssh-keys-check.js';
 import { git_user_check } from './utils/git-user-check.js';
 import { ssh_user_check } from './utils/ssh-user-check.js';
+import { gas_cache_delete } from './utils/gas-cache-delete.js';
+import { ssh_keys_delete } from './utils/ssh-keys-delete.js';
+import { ssh_config_restore } from './utils/ssh-config-restore.js';
 
 const banner = async () => {
   fromString(textSync('Git Account Switch SSH', {
@@ -54,14 +57,30 @@ const main = async (prechecks: {
   let project: string = '';
   intro('Welcome!');
 
-  console.log('prechecks : ', prechecks);
+  console.log('process.argv : ', process.argv);
 
   const s = spinner();
+
   s.start('Checking for existing SSH users');
 
   const users: IEntry[] = await ssh_user_check(prechecks.accounts);
 
   s.stop(users.length ? `Found ${users.length} users!` : 'No users found. Let\'s set one up!');
+
+  // restore ssh configuration to original
+  if (process.argv?.[2] === 'restore') {
+    // const deleted_keys = await ssh_keys_delete(users);
+    const restored_config = await ssh_config_restore();
+    await gas_cache_delete();
+
+    // log.step(`Removing keys: ${deleted_keys}`);
+
+    log.step(`Restoring ssh config:\n\n${restored_config}`);
+
+    outro('Restored!');
+
+    return process.exit(0);
+  }
 
   // link a ssh user to an existing git repo
   if (prechecks.gitrepo.length > 1) {
