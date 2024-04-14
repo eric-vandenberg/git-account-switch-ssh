@@ -6,7 +6,7 @@
   "scripts": {
     "start": "jiti ./lib/cli.ts",
     "build": "tsup ./lib/",
-    "local": "sudo npm i -g && gas",
+    "local": "sudo npm i -g",
     "reset": "rm -rf ./node_modules ./yarn.lock && yarn"
   },
   "bin": {
