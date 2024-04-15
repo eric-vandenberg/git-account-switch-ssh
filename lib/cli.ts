@@ -1,15 +1,14 @@
 #!/usr/bin/env node
 
 import { intro, text, isCancel, cancel, spinner, outro, log } from '@clack/prompts';
-import { textSync } from "figlet";
+import { textSync } from 'figlet';
 import { fromString } from 'lolcatjs';
-import { setTimeout as sleep } from 'node:timers/promises';
 import color from 'picocolors';
 
 import { version } from '../package.json';
+import { IEntry } from './types/entry.js';
 import { ssh_user_link } from './ssh-user-link.js';
 import { clone_repo_user_link } from './clone-repo-user-link.js';
-import { IEntry } from './types/entry.js';
 import { git_repo_check } from './utils/git-repo-check.js';
 import { ssh_config_backup } from './utils/ssh-config-backup.js';
 import { ssh_config_check } from './utils/ssh-config-check.js';

@@ -48,8 +48,8 @@ export const git_user_check = async (path: string) => {
   }
 
 
-  const eregex = /email = (.*?)$/sm
-  const uregex = /name = (.*?)$/sm
+  const eregex = /email\s=\s(.*?)$/sm
+  const uregex = /name\s=\s(.*?)$/sm
 
   if (!skip_global) {
     const gconfig = readFileSync(global_path, { encoding: 'utf-8' });

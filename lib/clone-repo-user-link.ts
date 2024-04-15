@@ -1,10 +1,10 @@
 import { execSync } from 'node:child_process';
 import { note } from '@clack/prompts';
 
+import { IEntry } from './types/entry.js';
 import { ssh_config_check } from './utils/ssh-config-check';
 import { git_config_set } from './utils/git-config-set.js';
 
-import { IEntry } from './types/entry.js';
 
 export const clone_repo_user_link = async (repository: string, project: string, username: string) => {
   try {
