@@ -1,5 +1,5 @@
 import os from 'node:os';
-import { accessSync, readdirSync, constants } from 'node:fs'
+import { readdirSync } from 'node:fs'
 
 export const ssh_keys_check = async (): Promise<string[]> => {
   try {
