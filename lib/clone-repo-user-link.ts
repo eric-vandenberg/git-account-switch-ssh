@@ -24,7 +24,7 @@ export const clone_repo_user_link = async (repository: string, project: string, 
       You are setup to commit as user ${username}
     `, 'Success');
     }
-  } catch (err: unknown) {
-    //
+  } catch (error: unknown) {
+
   }
 }

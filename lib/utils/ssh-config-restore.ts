@@ -11,7 +11,7 @@ export const ssh_config_restore = async (): Promise<string | undefined> => {
     const restored_config = readFileSync(`${home}/.ssh/config`, { encoding: 'utf-8' });
 
     return restored_config;
-  } catch (err: unknown) {
-    //
+  } catch (error: unknown) {
+
   }
 }

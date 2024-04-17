@@ -43,8 +43,7 @@ export const ssh_keys_delete = async (users: IEntry[]): Promise<string[]> => {
     }
 
     return result;
-  } catch (err: unknown) {
-    console.log('err: ', err);
+  } catch (error: unknown) {
     return [];
   }
 }

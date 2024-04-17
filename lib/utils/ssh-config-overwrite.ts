@@ -24,7 +24,7 @@ export const ssh_config_overwrite = async (users: IEntry[], addl?: Record<string
     }
 
     writeFileSync(`${home}/.ssh/config`, SSHConfig.stringify(config), { encoding: 'utf-8' });
-  } catch (err: unknown) {
-    // 
+  } catch (error: unknown) {
+
   }
 }

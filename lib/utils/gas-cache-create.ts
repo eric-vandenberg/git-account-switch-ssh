@@ -16,7 +16,7 @@ export const gas_cache_create = async (data: ICache) => {
     cache.push(data);
 
     writeFileSync(`${home}/.gascache.json`, JSON.stringify(cache), { encoding: 'utf-8' });
-  } catch (error) {
+  } catch (error: unknown) {
     const new_cache: ICache[] = [];
 
     new_cache.push(data);
