@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 
-import { intro, text, isCancel, cancel, spinner, outro, log } from '@clack/prompts';
+import { intro, text, isCancel, cancel, spinner, outro } from '@clack/prompts';
 import { textSync } from 'figlet';
 import { fromString } from 'lolcatjs';
 import color from 'picocolors';
 
 import { version } from '../package.json';
 import { IEntry } from './types/entry.js';
+import { restore } from './restore.js';
 import { ssh_user_link } from './ssh-user-link.js';
 import { clone_repo_user_link } from './clone-repo-user-link.js';
 import { git_repo_check } from './utils/git-repo-check.js';
@@ -15,9 +16,6 @@ import { ssh_config_check } from './utils/ssh-config-check.js';
 import { ssh_keys_check } from './utils/ssh-keys-check.js';
 import { git_user_check } from './utils/git-user-check.js';
 import { ssh_user_check } from './utils/ssh-user-check.js';
-import { gas_cache_delete } from './utils/gas-cache-delete.js';
-import { ssh_keys_delete } from './utils/ssh-keys-delete.js';
-import { ssh_config_restore } from './utils/ssh-config-restore.js';
 
 const banner = async () => {
   fromString(textSync('Git Account Switch SSH', {
@@ -68,13 +66,7 @@ const main = async (prechecks: {
 
   // restore ssh configuration to original
   if (process.argv?.[2] === 'restore') {
-    const deleted_keys = await ssh_keys_delete(users);
-    const restored_config = await ssh_config_restore();
-    await gas_cache_delete();
-
-    log.step(`Removing keys:\n\n${deleted_keys.join('\n')}`);
-
-    log.step(`Restoring ssh config:\n\n${restored_config}`);
+    await restore(users);
 
     outro('Restored!');
 
