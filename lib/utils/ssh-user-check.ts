@@ -13,9 +13,9 @@ export const ssh_user_check = async (accounts: IEntry[]): Promise<IEntry[]> => {
 
     try {
       await execAsync(`ssh -T git@${account.Host}`);
-    } catch (err: unknown) {
-      if (err) {
-        const execErr = err as ExecException;
+    } catch (error: unknown) {
+      if (error) {
+        const execErr = error as ExecException;
         // Hi username! You've successfully authenticated, but GitHub does not provide shell access.
         const regex = /Hi\s(.*?)\!/sm;
 

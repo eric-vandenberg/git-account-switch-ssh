@@ -29,8 +29,8 @@ export const git_user_check = async (path: string) => {
 
   try {
     accessSync(global_path, constants.R_OK | constants.W_OK);
-  } catch (err: unknown) {
-    const message = (err as Error).message;
+  } catch (error: unknown) {
+    const message = (error as Error).message;
 
     if (message.includes(global_path)) {
       skip_global = true;
@@ -39,8 +39,8 @@ export const git_user_check = async (path: string) => {
 
   try {
     accessSync(local_path, constants.R_OK | constants.W_OK);
-  } catch (err: unknown) {
-    const message = (err as Error).message;
+  } catch (error: unknown) {
+    const message = (error as Error).message;
 
     if (message.includes(local_path)) {
       skip_local = true;

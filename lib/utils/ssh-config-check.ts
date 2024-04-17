@@ -28,7 +28,7 @@ export const ssh_config_check = async (): Promise<IEntry[]> => {
     }
 
     return accounts;
-  } catch (error) {
+  } catch (error: unknown) {
     return [];
   }
 }

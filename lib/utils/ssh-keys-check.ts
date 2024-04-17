@@ -14,7 +14,7 @@ export const ssh_keys_check = async (): Promise<string[]> => {
     }
 
     return keys;
-  } catch (err: unknown) {
+  } catch (error: unknown) {
     return [];
   }
 }

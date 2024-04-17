@@ -24,8 +24,7 @@ export const ssh_keys_create = async (options: { username: string, name: string;
     `, 'Instructions');
 
     return key;
-  } catch (err: unknown) {
-    //
-    console.log('err : ', err);
+  } catch (error: unknown) {
+
   }
 }

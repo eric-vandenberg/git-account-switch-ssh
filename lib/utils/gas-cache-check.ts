@@ -13,7 +13,7 @@ export const gas_cache_check = async (): Promise<ICache[]> => {
     const cache = JSON.parse(file);
 
     return cache;
-  } catch (error) {
+  } catch (error: unknown) {
     return []
   }
 }

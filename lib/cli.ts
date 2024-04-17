@@ -54,15 +54,13 @@ const main = async (prechecks: {
   let project: string = '';
   intro('Welcome!');
 
-  console.log('process.argv : ', process.argv);
-
   const s = spinner();
 
   s.start('Checking for existing SSH users');
 
   const users: IEntry[] = await ssh_user_check(prechecks.accounts);
 
-  s.stop(users.length ? `Found ${users.length} users!` : 'No users found. Let\'s set one up!');
+  s.stop(users.length ? `Found ${users.length} user${users.length > 1 ? 's' : ''}!` : 'No users found. Let\'s set one up!');
 
   // restore ssh configuration to original
   if (process.argv?.[2] === 'restore') {
@@ -99,7 +97,7 @@ const main = async (prechecks: {
     await clone_repo_user_link(repository.toString(), project, linked_user);
   }
 
-  outro(`User ${linked_user} is all setup for repo ${project}`);
+  outro(`User ${color.magenta(linked_user)} is all setup for repo ${color.green(project)}`);
 }
 
 banner().then(() => init().then((prechecks) => main(prechecks).catch(console.error)));

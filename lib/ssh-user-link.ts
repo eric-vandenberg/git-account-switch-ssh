@@ -1,4 +1,5 @@
 import { cancel, confirm, group, isCancel, log, password, select, text } from '@clack/prompts';
+import color from 'picocolors';
 
 import { IEntry } from './types/entry.js';
 import { gas_cache_check } from './utils/gas-cache-check.js';
@@ -15,10 +16,10 @@ interface IOptions {
 
 export const ssh_user_link = async (opts: IOptions): Promise<string> => {
   let username: string;
-  const options = opts.users.map((user) => ({ value: user.User as string, label: user.User as string }));
+  const options = opts.users.map((user: IEntry) => ({ value: user.User as string, label: user.User as string }));
 
   const link = await select({
-    message: `Which ssh user do you want linked to ${opts.project}`,
+    message: `Which ssh user do you want linked to ${color.green(opts.project)}`,
     options: [
       ...options,
       { value: '@', label: 'Setup a new ssh user' },
@@ -87,13 +88,13 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
       name: () =>
         text({
           message: 'What is your name?',
-          placeholder: 'John Doe',
+          placeholder: 'First Last',
         }),
 
       email: () =>
         text({
           message: 'What is your primary email for this git account?',
-          placeholder: 'john.doe@email.com',
+          placeholder: 'first.last@email.com',
         }),
 
       passphrase: () =>

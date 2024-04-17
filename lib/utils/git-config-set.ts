@@ -20,7 +20,7 @@ export const git_config_set = async (username: string, project: string = '.') =>
     if (section?.IdentityFile?.[0]) {
       execSync(`cd ${project} && git config core.sshCommand "ssh -o IdentitiesOnly=yes -i ${section.IdentityFile[0]} -F /dev/null"`);
     }
-  } catch (err: unknown) {
+  } catch (error: unknown) {
 
   }
 }

@@ -9,7 +9,7 @@ export const gas_cache_delete = async () => {
     if (existsSync(cache_path)) {
       unlinkSync(cache_path);
     }
-  } catch (err: unknown) {
-    //
+  } catch (error: unknown) {
+
   }
 }

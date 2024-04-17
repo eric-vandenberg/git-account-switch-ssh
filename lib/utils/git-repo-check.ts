@@ -7,7 +7,7 @@ export const git_repo_check = async () => {
     path = execSync('git rev-parse --show-toplevel', { stdio: [] }).toString().trim();
 
     return path;
-  } catch (err: unknown) {
+  } catch (error: unknown) {
 
     return path;
   }
