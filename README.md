@@ -1,5 +1,42 @@
-# gas
-Git Account Switch SSH
+# Git Account Switch SSH
+
+## Installation
+```javascript
+npm install -g git-account-switch-ssh
+```
+
+## Usage
+
+**Within an existing git repository**
+```javascript
+gas
+```
+
+## Demo - link an ssh user to repository
+
+
+**Clone a repository (outside a git repository)**
+```javascript
+gas
+```
+
+## Demo - clone a repository and link ssh user
+
+
+**Restore to original ssh configuration**
+```javascript
+gas restore
+```
+
+## Demo
+
+
+## License
+MIT © Eric Vandenberg
+
+
+
+
 
 plan it out
 
