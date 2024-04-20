@@ -7,20 +7,23 @@ npm install -g git-account-switch-ssh
 
 ## Usage
 
-**Within an existing git repository**
+**Link an ssh user to a repository**
+> Within an existing git repository
+
 ```javascript
 gas
 ```
 
-## Demo - link an ssh user to repository
+**Demo**
 
 
-**Clone a repository (outside a git repository)**
+**Clone a repository and link ssh user**
+>Outside of a git repository
 ```javascript
 gas
 ```
 
-## Demo - clone a repository and link ssh user
+**Demo**
 
 
 **Restore to original ssh configuration**
@@ -28,7 +31,7 @@ gas
 gas restore
 ```
 
-## Demo
+**Demo**
 
 
 ## License
