@@ -52,11 +52,12 @@ const main = async (prechecks: {
 }) => {
   let linked_user;
   let project: string = '';
-  intro('Welcome!');
-
+  const is_repo = prechecks.gitrepo.length > 1;
   const s = spinner();
 
-  s.start('Checking for existing SSH users');
+  intro(is_repo ? 'Preparing to link an ssh user to this repository' : 'Preparing to clone a new repository and link an ssh user');
+
+  s.start('Checking for existing ssh users');
 
   const users: IEntry[] = await ssh_user_check(prechecks.accounts);
 
@@ -72,14 +73,11 @@ const main = async (prechecks: {
   }
 
   // link a ssh user to an existing git repo
-  if (prechecks.gitrepo.length > 1) {
+  if (is_repo) {
     project = prechecks.gitrepo.split('/').pop() ?? '';
 
     linked_user = await ssh_user_link({ project, users, gitconfig: prechecks.gitconfig });
-  }
-
-  // clone a new repo with a specified ssh user
-  if (prechecks.gitrepo.length === 1) {
+  } else {
     const repository = await text({
       message: 'Clone which repository?',
       placeholder: 'e.g. git@github.com:organization/repository.git',
