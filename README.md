@@ -7,7 +7,7 @@ npm install -g git-account-switch-ssh
 
 ## Usage
 
-**link an ssh user to a repository**
+**Link an ssh user to a repository**
 > Within an existing git repository
 
 ```javascript
