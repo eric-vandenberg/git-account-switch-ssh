@@ -2,6 +2,7 @@ import { cancel, confirm, group, isCancel, log, password, select, text } from '@
 import color from 'picocolors';
 
 import { IEntry } from './types/entry.js';
+import { NEW_SSH_USER } from './types/symbols.js';
 import { gas_cache_check } from './utils/gas-cache-check.js';
 import { gas_cache_create } from './utils/gas-cache-create.js';
 import { git_config_set } from './utils/git-config-set.js';
@@ -22,7 +23,7 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
     message: `Which ssh user do you want linked to ${color.green(opts.project)}`,
     options: [
       ...options,
-      { value: '@', label: 'Setup a new ssh user' },
+      { value: NEW_SSH_USER, label: 'Setup a new ssh user' },
     ],
   });
 
@@ -31,7 +32,7 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
     return process.exit(0);
   }
 
-  if (link !== '@') {
+  if (link !== NEW_SSH_USER) {
     username = link as string;
 
     const cache = await gas_cache_check();
