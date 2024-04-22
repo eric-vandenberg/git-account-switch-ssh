@@ -1,5 +1,5 @@
-import { accessSync, readFileSync, constants } from 'node:fs';
 import os from 'node:os';
+import { accessSync, readFileSync, constants } from 'node:fs';
 
 import { ICache } from '../types/cache.js';
 

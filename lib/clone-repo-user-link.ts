@@ -2,7 +2,7 @@ import { execSync } from 'node:child_process';
 import { note } from '@clack/prompts';
 
 import { IEntry } from './types/entry.js';
-import { ssh_config_check } from './utils/ssh-config-check';
+import { ssh_config_check } from './utils/ssh-config-check.js';
 import { git_config_set } from './utils/git-config-set.js';
 
 

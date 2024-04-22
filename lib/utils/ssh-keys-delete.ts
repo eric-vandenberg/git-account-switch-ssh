@@ -1,6 +1,6 @@
-import { existsSync, unlinkSync } from 'node:fs';
-import { execSync } from 'node:child_process';
 import os from 'node:os';
+import { execSync } from 'node:child_process';
+import { existsSync, unlinkSync } from 'node:fs';
 
 import { IEntry } from '../types/entry.js';
 import { ssh_config_backup_check } from './ssh-config-backup-check.js';

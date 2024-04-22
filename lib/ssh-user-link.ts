@@ -1,4 +1,4 @@
-import { cancel, confirm, group, isCancel, log, password, select, selectKey, text } from '@clack/prompts';
+import { cancel, confirm, group, isCancel, log, password, select, text } from '@clack/prompts';
 import color from 'picocolors';
 
 import { HOSTS } from './types/hosts.js';
@@ -112,7 +112,7 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
 
       name: () =>
         text({
-          message: 'What is your full name?',
+          message: 'What\'s your full name?',
           placeholder: 'First Last',
         }),
 

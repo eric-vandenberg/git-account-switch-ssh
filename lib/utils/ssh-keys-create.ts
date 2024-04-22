@@ -29,7 +29,7 @@ export const ssh_keys_create = async (options: { host: typeof GITHUB | typeof GI
     `, 'Instructions');
 
     const confirmed = await confirm({
-      message: 'Confirm once you\'ve copy pasted your key'
+      message: 'Confirm once you\'ve copied and saved your key'
     })
 
     if (isCancel(confirmed)) {

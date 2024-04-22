@@ -1,5 +1,5 @@
-import { exec, ExecException } from 'node:child_process';
 import { promisify } from 'node:util';
+import { exec, ExecException } from 'node:child_process';
 
 import { IEntry } from '../types/entry.js';
 import { HOSTS } from '../types/hosts.js';

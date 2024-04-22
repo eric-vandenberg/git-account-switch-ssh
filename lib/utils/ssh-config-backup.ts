@@ -1,6 +1,6 @@
-import { accessSync, readFileSync, constants, writeFileSync } from 'node:fs';
-import { stat } from 'node:fs/promises';
 import os from 'node:os';
+import { stat } from 'node:fs/promises';
+import { accessSync, readFileSync, constants, writeFileSync } from 'node:fs';
 
 export const ssh_config_backup = async (): Promise<void> => {
   try {
