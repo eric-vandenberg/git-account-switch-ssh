@@ -1,7 +1,7 @@
 import { cancel, confirm, group, isCancel, log, password, select, text } from '@clack/prompts';
-import color from 'picocolors';
+import gradient from 'gradient-string';
 
-import { HOSTS } from './types/hosts.js';
+import { HOSTS } from './consts/hosts.js';
 import { IEntry } from './types/entry.js';
 import { NEW_SSH_USER, GITHUB, GITLAB } from './types/symbols.js';
 import { gas_cache_check } from './utils/gas-cache-check.js';
@@ -21,7 +21,7 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
   const options = opts.users.map((user: IEntry) => ({ value: user.User as string, label: user.User as string }));
 
   const link = await select({
-    message: `Which ssh user do you want linked to ${color.green(opts.project)}`,
+    message: `Which ssh user do you want linked to ${gradient.teen(opts.project)}`,
     options: [
       ...options,
       { value: NEW_SSH_USER, label: 'Setup a new ssh user' },

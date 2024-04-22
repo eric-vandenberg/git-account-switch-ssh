@@ -1,12 +1,12 @@
 import { execSync } from 'node:child_process';
 import { cancel, confirm, isCancel, note } from '@clack/prompts';
-import color from 'picocolors';
+import gradient from 'gradient-string';
 
-import { HOSTS } from '../types/hosts.js';
-import { GITHUB, GITLAB } from '../types/symbols.js';
+import { HOSTS } from '../consts/hosts.js';
+import { TGithub, TGitlab } from '../types/symbols.js';
 import { ssh_keyscan_known_hosts } from './ssh-keyscan-known-hosts.js';
 
-export const ssh_keys_create = async (options: { host: typeof GITHUB | typeof GITLAB, username: string, name: string; email: string; passphrase: string }): Promise<string | undefined> => {
+export const ssh_keys_create = async (options: { host: TGithub | TGitlab, username: string, name: string; email: string; passphrase: string }): Promise<string | undefined> => {
   try {
     const key = `~/.ssh/id_ed25519_${options.username}`;
 
@@ -17,7 +17,7 @@ export const ssh_keys_create = async (options: { host: typeof GITHUB | typeof GI
       \n
       pbcopy < ${key}.pub
       \n
-      Now head over to ${color.blue(color.underline(HOSTS[options.host]['keys']))}
+      Now head over to ${gradient.cristal(HOSTS[options.host]['keys'])}
       \n
       Click "${HOSTS[options.host]['cta']}"
       \n
