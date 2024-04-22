@@ -2,10 +2,10 @@ import os from 'node:os';
 import { existsSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 
-import { HOSTS } from '../types/hosts.js';
-import { GITHUB, GITLAB } from '../types/symbols.js';
+import { HOSTS } from '../consts/hosts.js';
+import { TGithub, TGitlab } from '../types/symbols.js';
 
-export const ssh_keyscan_known_hosts = async (host: typeof GITHUB | typeof GITLAB): Promise<void> => {
+export const ssh_keyscan_known_hosts = async (host: TGithub | TGitlab): Promise<void> => {
   try {
     const home = os.homedir();
     const known_hosts_abs_path = `${home}/.ssh/known_hosts`;
