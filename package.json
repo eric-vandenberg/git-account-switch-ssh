@@ -28,13 +28,11 @@
   "dependencies": {
     "@clack/core": "^0.3.4",
     "@clack/prompts": "^0.7.0",
-    "figlet": "^1.7.0",
-    "lolcatjs": "^2.4.3",
-    "picocolors": "^1.0.0",
+    "gradient-string": "^2.0.2",
     "ssh-config": "^4.4.2"
   },
   "devDependencies": {
-    "@types/figlet": "^1.5.8",
+    "@types/gradient-string": "^1.1.6",
     "@types/node": "^20.12.2",
     "jiti": "^1.21.0",
     "tsup": "^8.0.2",
