@@ -55,7 +55,7 @@ const main = async (prechecks: {
   const is_repo = prechecks.gitrepo.length > 1;
   const s = spinner();
 
-  intro(is_repo ? 'Preparing to link an ssh user to this repository' : 'Preparing to clone a new repository and link an ssh user');
+  intro(is_repo ? 'Link an ssh user to this repository' : 'Clone a new repository and link an ssh user');
 
   s.start('Checking for existing ssh users');
 
@@ -80,7 +80,7 @@ const main = async (prechecks: {
   } else {
     const repository = await text({
       message: 'Clone which repository?',
-      placeholder: 'e.g. git@github.com:organization/repository.git',
+      placeholder: 'git@git{hub|lab}.com:organization/repository.git',
     });
 
     if (isCancel(repository)) {

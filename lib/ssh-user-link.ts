@@ -1,8 +1,9 @@
 import { cancel, confirm, group, isCancel, log, password, select, text } from '@clack/prompts';
 import color from 'picocolors';
 
+import { HOSTS } from './types/hosts.js';
 import { IEntry } from './types/entry.js';
-import { NEW_SSH_USER } from './types/symbols.js';
+import { NEW_SSH_USER, GITHUB, GITLAB } from './types/symbols.js';
 import { gas_cache_check } from './utils/gas-cache-check.js';
 import { gas_cache_create } from './utils/gas-cache-create.js';
 import { git_config_set } from './utils/git-config-set.js';
@@ -37,7 +38,7 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
 
     const cache = await gas_cache_check();
 
-    const record = cache.find((entry: { username: string; name: string; email: string; }) => entry.username === username);
+    const record = cache.find((entry: { host: string; username: string; name: string; email: string; }) => entry.username === username);
 
     const name = opts.gitconfig.local.user ?? opts.gitconfig.global.user;
     const email = opts.gitconfig.local.email ?? opts.gitconfig.global.email;
@@ -45,6 +46,17 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
     if (!record) {
       const retro = await group(
         {
+          host: () =>
+            select({
+              message: `Where is ${username} hosted?`,
+              options: [
+                // @ts-ignore
+                { value: GITHUB, label: HOSTS[GITHUB]['site'] },
+                // @ts-ignore
+                { value: GITLAB, label: HOSTS[GITLAB]['site'] },
+              ],
+            }),
+
           name: () =>
             text({
               message: 'What is your name?',
@@ -66,6 +78,7 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
       );
 
       await gas_cache_create({
+        host: HOSTS[retro.host]['site'],
         username,
         name: retro.name,
         email: retro.email,
@@ -80,15 +93,26 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
 
   const questions = await group(
     {
+      host: () =>
+        select({
+          message: 'Where is your git account hosted?',
+          options: [
+            // @ts-ignore
+            { value: GITHUB, label: HOSTS[GITHUB]['site'] },
+            // @ts-ignore
+            { value: GITLAB, label: HOSTS[GITLAB]['site'] },
+          ],
+        }),
+
       username: () =>
         text({
-          message: 'What is the username of the git account you want to add?',
-          placeholder: '(Only Github accounts are supported)',
+          message: 'What\'s your username?',
+          placeholder: 'username',
         }),
 
       name: () =>
         text({
-          message: 'What is your name?',
+          message: 'What\'s your full name?',
           placeholder: 'First Last',
         }),
 
@@ -113,6 +137,7 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
   );
 
   const cache_entry = {
+    host: HOSTS[questions.host]['site'],
     username: questions.username,
     name: questions.name,
     email: questions.email,
@@ -130,7 +155,7 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
   }
 
   const existing_cache = await gas_cache_check();
-  const existing_record = existing_cache.find((entry: { username: string; name: string; email: string; }) => entry.username === questions.username);
+  const existing_record = existing_cache.find((entry: { host: string; username: string; name: string; email: string; }) => entry.username === questions.username);
 
   if (!existing_record) {
     await gas_cache_create(cache_entry);
@@ -140,12 +165,12 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
 
   if (!!key) {
     const new_entry: Record<string, string | string[]> = {
-      Host: `github.com-${questions.username}`,
+      Host: `${HOSTS[questions.host]['site']}-${questions.username}`,
       AddKeysToAgent: 'yes',
       UseKeychain: 'yes',
       IdentityFile: [key],
       User: questions.username,
-      HostName: 'github.com'
+      HostName: HOSTS[questions.host]['site']
     };
 
     await ssh_config_overwrite(opts.users, new_entry);
