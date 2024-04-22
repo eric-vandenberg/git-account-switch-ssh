@@ -9,7 +9,7 @@ export const git_config_set = async (username: string, project: string = '.') =>
     const cache = await gas_cache_check();
     const accounts = await ssh_config_check();
 
-    const record = cache.find((entry: { username: string; name: string; email: string; }) => entry.username === username);
+    const record = cache.find((entry: { host: string; username: string; name: string; email: string; }) => entry.username === username);
     const section = accounts.find((account: IEntry) => account?.User === username);
 
     if (record) {
