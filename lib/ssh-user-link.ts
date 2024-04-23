@@ -1,8 +1,9 @@
 import { cancel, confirm, group, isCancel, log, password, select, text } from '@clack/prompts';
-import gradient from 'gradient-string';
+import chalk from 'chalk';
 
-import { HOSTS } from './consts/hosts.js';
 import { IEntry } from './types/entry.js';
+import { HOSTS } from './consts/hosts.js';
+import { color_scheme } from './consts/banner.js';
 import { NEW_SSH_USER, GITHUB, GITLAB } from './types/symbols.js';
 import { gas_cache_check } from './utils/gas-cache-check.js';
 import { gas_cache_create } from './utils/gas-cache-create.js';
@@ -18,10 +19,10 @@ interface IOptions {
 
 export const ssh_user_link = async (opts: IOptions): Promise<string> => {
   let username: string;
-  const options = opts.users.map((user: IEntry) => ({ value: user.User as string, label: user.User as string }));
+  const options = opts.users.map((user: IEntry) => ({ value: user.User as string, label: `${user.User}${user?.HostName ? ' (' + user.HostName + ')' : ''}` }));
 
   const link = await select({
-    message: `Which ssh user do you want linked to ${gradient.teen(opts.project)}`,
+    message: `Which ssh user do you want linked to ${chalk.hex(color_scheme.red).bold(opts.project)}`,
     options: [
       ...options,
       { value: NEW_SSH_USER, label: 'Setup a new ssh user' },
@@ -48,7 +49,7 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
         {
           host: () =>
             select({
-              message: `Where is ${username} hosted?`,
+              message: `Where is ${chalk.hex(color_scheme.green).bold(username)} hosted?`,
               options: [
                 // @ts-ignore
                 { value: GITHUB, label: HOSTS[GITHUB]['site'] },
