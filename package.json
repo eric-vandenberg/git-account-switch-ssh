@@ -6,28 +6,37 @@
   "scripts": {
     "start": "jiti ./lib/cli.ts",
     "build": "tsup ./lib/",
-    "local": "sudo npm i -g",
-    "reset": "rm -rf ./node_modules ./yarn.lock && yarn"
+    "local": "yarn build && sudo npm i -g",
+    "reset": "rm -rf ./node_modules ./dist ./yarn.lock && yarn"
   },
   "bin": {
     "gas": "./dist/cli.js"
   },
   "keywords": [
     "cli",
+    "command-line",
     "git",
+    "github",
+    "gitlab",
+    "npmtool",
     "ssh",
-    "npmtool"
+    "ssh-add",
+    "ssh-agent",
+    "ssh-config",
+    "ssh-keyscan",
+    "terminal"
   ],
-  "author": "Eric Vandenberg <contact@ericvandenberg.com>",
+  "author": "Eric Vandenberg (contact@ericvandenberg.com)",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Eric-Vandenberg/git-account-switch-ssh"
+    "url": "git@github.com:eric-vandenberg/git-account-switch-ssh.git"
   },
   "homepage": "https://github.com/Eric-Vandenberg/git-account-switch-ssh#readme",
   "dependencies": {
     "@clack/core": "^0.3.4",
     "@clack/prompts": "^0.7.0",
+    "chalk": "^4.1.2",
     "gradient-string": "^2.0.2",
     "ssh-config": "^4.4.2"
   },
