@@ -1,5 +1,6 @@
 import { execSync } from 'node:child_process';
 import { note } from '@clack/prompts';
+import chalk from 'chalk';
 
 import { IEntry } from './types/entry.js';
 import { ssh_config_check } from './utils/ssh-config-check.js';
@@ -17,11 +18,10 @@ export const clone_repo_user_link = async (repository: string, project: string, 
       await git_config_set(username, project);
 
       note(`
-      Repo cloned!
+      Repository cloned
       \n
-      cd ${project}
+      ${chalk.inverse.bold('cd ') + chalk.inverse.bold(project)}
       \n
-      You are setup to commit as user ${username}
     `, 'Success');
     }
   } catch (error: unknown) {

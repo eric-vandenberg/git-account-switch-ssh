@@ -1,6 +1,6 @@
 import { execSync } from 'node:child_process';
 import { cancel, confirm, isCancel, note } from '@clack/prompts';
-import gradient from 'gradient-string';
+import chalk from 'chalk';
 
 import { HOSTS } from '../consts/hosts.js';
 import { TGithub, TGitlab } from '../types/symbols.js';
@@ -9,15 +9,16 @@ import { ssh_keyscan_known_hosts } from './ssh-keyscan-known-hosts.js';
 export const ssh_keys_create = async (options: { host: TGithub | TGitlab, username: string, name: string; email: string; passphrase: string }): Promise<string | undefined> => {
   try {
     const key = `~/.ssh/id_ed25519_${options.username}`;
+    const copy_command = `pbcopy < ${key}.pub`;
 
     execSync(`ssh-keygen -t ed25519 -C "${options.email}" -f ${key} -P "${options.passphrase}"`);
 
     note(`
       Open a new shell and run this command to copy your public key:
       \n
-      pbcopy < ${key}.pub
+      ${chalk.inverse.bold(copy_command)}
       \n
-      Now head over to ${gradient.cristal(HOSTS[options.host]['keys'])}
+      Now head over to ${chalk.blue.underline(HOSTS[options.host]['keys'])}
       \n
       Click "${HOSTS[options.host]['cta']}"
       \n

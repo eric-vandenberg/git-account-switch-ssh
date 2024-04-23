@@ -2,10 +2,11 @@
 
 import { intro, text, isCancel, cancel, spinner, outro } from '@clack/prompts';
 import gradient from 'gradient-string';
+import chalk from 'chalk';
 
 import { version } from '../package.json';
 import { IEntry } from './types/entry.js';
-import { title } from './consts/banner.js';
+import { title, color_scheme } from './consts/banner.js';
 import { restore } from './restore.js';
 import { ssh_user_link } from './ssh-user-link.js';
 import { clone_repo_user_link } from './clone-repo-user-link.js';
@@ -17,7 +18,8 @@ import { git_user_check } from './utils/git-user-check.js';
 import { ssh_user_check } from './utils/ssh-user-check.js';
 
 const banner = async () => {
-  console.log(gradient.teen.multiline(title) + '\n');
+  const gasGradient = gradient(Object.values(color_scheme));
+  console.log(gasGradient.multiline(title) + '\n');
   console.log('     ' + gradient.cristal.multiline(version) + '\n\n');
 }
 
@@ -88,7 +90,7 @@ const main = async (prechecks: {
     await clone_repo_user_link(repository.toString(), project, linked_user);
   }
 
-  outro(`User ${gradient.cristal(linked_user)} is all setup for repo ${gradient.teen(project)}`);
+  outro(`User ${chalk.hex(color_scheme.green).bold(linked_user)} is all setup for repo ${chalk.hex(color_scheme.red).bold(project)}`);
 }
 
 banner().then(() => init().then((prechecks) => main(prechecks).catch(console.error)));
