@@ -1,5 +1,5 @@
 import os from 'node:os';
-import { readdirSync } from 'node:fs'
+import { readdirSync } from 'node:fs';
 
 export const ssh_keys_check = async (): Promise<string[]> => {
   try {
@@ -17,4 +17,4 @@ export const ssh_keys_check = async (): Promise<string[]> => {
   } catch (error: unknown) {
     return [];
   }
-}
+};

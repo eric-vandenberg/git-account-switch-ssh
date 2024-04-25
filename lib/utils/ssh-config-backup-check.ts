@@ -9,7 +9,9 @@ export const ssh_config_backup_check = async (): Promise<IEntry[]> => {
     const home = os.homedir();
     accessSync(`${home}/.ssh/config_backup`, constants.R_OK | constants.W_OK);
 
-    const file = readFileSync(`${home}/.ssh/config_backup`, { encoding: 'utf-8' });
+    const file = readFileSync(`${home}/.ssh/config_backup`, {
+      encoding: 'utf-8',
+    });
 
     const config = parse(file);
 
@@ -31,4 +33,4 @@ export const ssh_config_backup_check = async (): Promise<IEntry[]> => {
   } catch (error: unknown) {
     return [];
   }
-}
+};

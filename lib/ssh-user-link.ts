@@ -1,4 +1,13 @@
-import { cancel, confirm, group, isCancel, log, password, select, text } from '@clack/prompts';
+import {
+  cancel,
+  confirm,
+  group,
+  isCancel,
+  log,
+  password,
+  select,
+  text,
+} from '@clack/prompts';
 import chalk from 'chalk';
 
 import { IEntry } from './types/entry.js';
@@ -14,15 +23,23 @@ import { ssh_config_overwrite } from './utils/ssh-config-overwrite.js';
 interface IOptions {
   project: string;
   users: IEntry[];
-  gitconfig: { global: { email?: string; user?: string; }, local: { email?: string; user?: string; } };
+  gitconfig: {
+    global: { email?: string; user?: string };
+    local: { email?: string; user?: string };
+  };
 }
 
 export const ssh_user_link = async (opts: IOptions): Promise<string> => {
   let username: string;
-  const options = opts.users.map((user: IEntry) => ({ value: user.User as string, label: `${user.User}${user?.HostName ? ' (' + user.HostName + ')' : ''}` }));
+  const options = opts.users.map((user: IEntry) => ({
+    value: user.User as string,
+    label: `${user.User}${user?.HostName ? ' (' + user.HostName + ')' : ''}`,
+  }));
 
   const link = await select({
-    message: `Which ssh user do you want linked to ${chalk.hex(color_scheme.red).bold(opts.project)}`,
+    message: `Which ssh user do you want linked to ${chalk
+      .hex(color_scheme.red)
+      .bold(opts.project)}`,
     options: [
       ...options,
       { value: NEW_SSH_USER, label: 'Setup a new ssh user' },
@@ -39,7 +56,14 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
 
     const cache = await gas_cache_check();
 
-    const record = cache.find((entry: { host: string; username: string; name: string; email: string; }) => entry.username === username);
+    const record = cache.find(
+      (entry: {
+        host: string;
+        username: string;
+        name: string;
+        email: string;
+      }) => entry.username === username
+    );
 
     const name = opts.gitconfig.local.user ?? opts.gitconfig.global.user;
     const email = opts.gitconfig.local.email ?? opts.gitconfig.global.email;
@@ -49,7 +73,9 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
         {
           host: () =>
             select({
-              message: `Where is ${chalk.hex(color_scheme.green).bold(username)} hosted?`,
+              message: `Where is ${chalk
+                .hex(color_scheme.green)
+                .bold(username)} hosted?`,
               options: [
                 // @ts-ignore
                 { value: GITHUB, label: HOSTS[GITHUB]['site'] },
@@ -73,8 +99,8 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
         {
           onCancel: () => {
             cancel('Operation cancelled');
-            process.exit(0)
-          }
+            process.exit(0);
+          },
         }
       );
 
@@ -83,7 +109,7 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
         username,
         name: retro.name,
         email: retro.email,
-      })
+      });
     }
 
     await ssh_config_overwrite(opts.users);
@@ -107,13 +133,13 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
 
       username: () =>
         text({
-          message: 'What\'s your username?',
+          message: "What's your username?",
           placeholder: 'username',
         }),
 
       name: () =>
         text({
-          message: 'What\'s your full name?',
+          message: "What's your full name?",
           placeholder: 'First Last',
         }),
 
@@ -126,14 +152,14 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
       passphrase: () =>
         password({
           message: 'Enter a passphrase to protect your ssh keys',
-          mask: '*'
+          mask: '*',
         }),
     },
     {
       onCancel: () => {
         cancel('Operation cancelled');
-        process.exit(0)
-      }
+        process.exit(0);
+      },
     }
   );
 
@@ -142,12 +168,12 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
     username: questions.username,
     name: questions.name,
     email: questions.email,
-  }
+  };
 
   log.step(`${JSON.stringify(cache_entry, null, 2)}`);
 
   const confirmed = await confirm({
-    message: `Does the information above look correct?`
+    message: `Does the information above look correct?`,
   });
 
   if (isCancel(confirmed)) {
@@ -156,9 +182,16 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
   }
 
   const existing_cache = await gas_cache_check();
-  const existing_record = existing_cache.find((entry: { host: string; username: string; name: string; email: string; }) => entry.username === questions.username);
+  const existing_record = existing_cache.find(
+    (entry: { host: string; username: string; name: string; email: string }) =>
+      entry.username === questions.username &&
+      entry.host === HOSTS[questions.host]['site']
+  );
 
-  if (!existing_record) {
+  if (existing_record) {
+    cancel("It looks like you've already setup this user");
+    return process.exit(0);
+  } else {
     await gas_cache_create(cache_entry);
   }
 
@@ -171,7 +204,7 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
       UseKeychain: 'yes',
       IdentityFile: [key],
       User: questions.username,
-      HostName: HOSTS[questions.host]['site']
+      HostName: HOSTS[questions.host]['site'],
     };
 
     await ssh_config_overwrite(opts.users, new_entry);
@@ -179,4 +212,4 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
   }
 
   return questions.username;
-}
+};

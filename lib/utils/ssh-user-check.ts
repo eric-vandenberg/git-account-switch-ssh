@@ -18,7 +18,7 @@ export const ssh_user_check = async (accounts: IEntry[]): Promise<IEntry[]> => {
 
       if (stdout) {
         // Welcome to GitLab, @username!
-        const regex = /@(.*?)\!/sm;
+        const regex = /@(.*?)\!/ms;
         const username_match = stdout.match(regex);
         const username = username_match ? username_match[1] : undefined;
 
@@ -26,13 +26,12 @@ export const ssh_user_check = async (accounts: IEntry[]): Promise<IEntry[]> => {
           entry.User = username;
           entry.HostName = HOSTS[GITLAB]['site'];
         }
-
       }
     } catch (error: unknown) {
       if (error) {
         const execErr = error as ExecException;
         // Hi username! You've successfully authenticated, but GitHub does not provide shell access.
-        const regex = /Hi\s(.*?)\!/sm;
+        const regex = /Hi\s(.*?)\!/ms;
 
         const username_match = execErr.stderr?.match(regex);
         const username = username_match ? username_match[1] : undefined;
@@ -48,5 +47,4 @@ export const ssh_user_check = async (accounts: IEntry[]): Promise<IEntry[]> => {
   }
 
   return users;
-}
-
+};

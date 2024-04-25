@@ -14,6 +14,6 @@ export const gas_cache_check = async (): Promise<ICache[]> => {
 
     return cache;
   } catch (error: unknown) {
-    return []
+    return [];
   }
-}
+};

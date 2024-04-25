@@ -21,7 +21,7 @@ const banner = async () => {
   const gasGradient = gradient(Object.values(color_scheme));
   console.log(gasGradient.multiline(title) + '\n');
   console.log('     ' + gradient.cristal.multiline(version) + '\n\n');
-}
+};
 
 const init = async () => {
   const accounts = await ssh_config_check();
@@ -36,27 +36,38 @@ const init = async () => {
     keys,
     gitrepo,
     gitconfig,
-  }
-}
+  };
+};
 
 const main = async (prechecks: {
   accounts: IEntry[];
   keys: string[];
   gitrepo: string;
-  gitconfig: { global: { email?: string; user?: string; }, local: { email?: string; user?: string; } };
+  gitconfig: {
+    global: { email?: string; user?: string };
+    local: { email?: string; user?: string };
+  };
 }) => {
   let linked_user;
   let project: string = '';
   const is_repo = prechecks.gitrepo.length > 1;
   const s = spinner();
 
-  intro(is_repo ? 'Link an ssh user to this repository' : 'Clone a new repository and link an ssh user');
+  intro(
+    is_repo
+      ? 'Link an ssh user to this repository'
+      : 'Clone a new repository and link an ssh user'
+  );
 
   s.start('Checking for existing ssh users');
 
   const users: IEntry[] = await ssh_user_check(prechecks.accounts);
 
-  s.stop(users.length ? `Found ${users.length} user${users.length > 1 ? 's' : ''}!` : 'No users found. Let\'s set one up!');
+  s.stop(
+    users.length
+      ? `Found ${users.length} user${users.length > 1 ? 's' : ''}!`
+      : "No users found. Let's set one up!"
+  );
 
   // restore ssh configuration to original
   if (process.argv?.[2] === 'restore') {
@@ -71,7 +82,11 @@ const main = async (prechecks: {
   if (is_repo) {
     project = prechecks.gitrepo.split('/').pop() ?? '';
 
-    linked_user = await ssh_user_link({ project, users, gitconfig: prechecks.gitconfig });
+    linked_user = await ssh_user_link({
+      project,
+      users,
+      gitconfig: prechecks.gitconfig,
+    });
   } else {
     const repository = await text({
       message: 'Clone which repository?',
@@ -85,12 +100,24 @@ const main = async (prechecks: {
 
     project = repository.toString().split('/').pop()?.replace('.git', '') ?? '';
 
-    linked_user = await ssh_user_link({ project, users, gitconfig: prechecks.gitconfig });
+    linked_user = await ssh_user_link({
+      project,
+      users,
+      gitconfig: prechecks.gitconfig,
+    });
 
     await clone_repo_user_link(repository.toString(), project, linked_user);
   }
 
-  outro(`User ${chalk.hex(color_scheme.green).bold(linked_user)} is all setup for repo ${chalk.hex(color_scheme.red).bold(project)}`);
-}
+  outro(
+    `User ${chalk
+      .hex(color_scheme.green)
+      .bold(linked_user)} is all setup for repo ${chalk
+      .hex(color_scheme.red)
+      .bold(project)}`
+  );
+};
 
-banner().then(() => init().then((prechecks) => main(prechecks).catch(console.error)));
+banner().then(() =>
+  init().then((prechecks) => main(prechecks).catch(console.error))
+);
