@@ -1,5 +1,5 @@
 import os from 'node:os';
-import { accessSync, readFileSync, constants } from 'node:fs'
+import { accessSync, readFileSync, constants } from 'node:fs';
 
 export const git_user_check = async (path: string) => {
   const home = os.homedir();
@@ -9,13 +9,13 @@ export const git_user_check = async (path: string) => {
   let skip_local = false;
   const result: {
     global: {
-      email?: string,
-      user?: string,
-    },
+      email?: string;
+      user?: string;
+    };
     local: {
-      email?: string,
-      user?: string,
-    }
+      email?: string;
+      user?: string;
+    };
   } = {
     global: {
       email: undefined,
@@ -24,8 +24,8 @@ export const git_user_check = async (path: string) => {
     local: {
       email: undefined,
       user: undefined,
-    }
-  }
+    },
+  };
 
   try {
     accessSync(global_path, constants.R_OK | constants.W_OK);
@@ -47,9 +47,8 @@ export const git_user_check = async (path: string) => {
     }
   }
 
-
-  const eregex = /email\s=\s(.*?)$/sm
-  const uregex = /name\s=\s(.*?)$/sm
+  const eregex = /email\s=\s(.*?)$/ms;
+  const uregex = /name\s=\s(.*?)$/ms;
 
   if (!skip_global) {
     const gconfig = readFileSync(global_path, { encoding: 'utf-8' });
@@ -60,8 +59,8 @@ export const git_user_check = async (path: string) => {
 
     result.global = {
       email: gemail,
-      user: guser
-    }
+      user: guser,
+    };
   }
 
   if (!skip_local) {
@@ -73,9 +72,9 @@ export const git_user_check = async (path: string) => {
 
     result.local = {
       email: lemail,
-      user: luser
-    }
+      user: luser,
+    };
   }
 
   return result;
-}
+};

@@ -16,7 +16,5 @@ export const ssh_config_backup = async (): Promise<void> => {
 
       writeFileSync(`${home}/.ssh/config_backup`, file);
     }
-  } catch (error: unknown) {
-
-  }
-}
+  } catch (error: unknown) {}
+};

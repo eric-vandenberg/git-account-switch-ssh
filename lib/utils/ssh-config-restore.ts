@@ -8,10 +8,10 @@ export const ssh_config_restore = async (): Promise<string | undefined> => {
 
     execSync(`mv ${home}/.ssh/config_backup ${home}/.ssh/config`);
 
-    const restored_config = readFileSync(`${home}/.ssh/config`, { encoding: 'utf-8' });
+    const restored_config = readFileSync(`${home}/.ssh/config`, {
+      encoding: 'utf-8',
+    });
 
     return restored_config;
-  } catch (error: unknown) {
-
-  }
-}
+  } catch (error: unknown) {}
+};

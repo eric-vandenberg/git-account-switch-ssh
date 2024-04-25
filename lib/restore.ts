@@ -14,7 +14,5 @@ export const restore = async (users: IEntry[]) => {
     log.step(`Removing keys:\n\n${deleted_keys.join('\n')}`);
 
     log.step(`Restoring ssh config:\n\n${restored_config}`);
-  } catch (error: unknown) {
-
-  }
-}
+  } catch (error: unknown) {}
+};

@@ -31,4 +31,4 @@ export const ssh_config_check = async (): Promise<IEntry[]> => {
   } catch (error: unknown) {
     return [];
   }
-}
+};

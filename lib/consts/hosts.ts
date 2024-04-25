@@ -5,11 +5,11 @@ interface IHostData {
   keys: string;
   cta: string;
   usage: string;
-};
+}
 
 interface IHosts {
-  [GITHUB]: IHostData,
-  [GITLAB]: IHostData,
+  [GITHUB]: IHostData;
+  [GITLAB]: IHostData;
 }
 
 export const HOSTS: IHosts = {
@@ -24,5 +24,5 @@ export const HOSTS: IHosts = {
     keys: 'https://gitlab.com/-/user_settings/ssh_keys',
     cta: 'Add new key',
     usage: 'Set the Usage type (Authentication & Signing)',
-  }
-}
+  },
+};

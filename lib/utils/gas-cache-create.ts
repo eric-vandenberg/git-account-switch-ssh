@@ -15,12 +15,16 @@ export const gas_cache_create = async (data: ICache) => {
 
     cache.push(data);
 
-    writeFileSync(`${home}/.gascache.json`, JSON.stringify(cache), { encoding: 'utf-8' });
+    writeFileSync(`${home}/.gascache.json`, JSON.stringify(cache), {
+      encoding: 'utf-8',
+    });
   } catch (error: unknown) {
     const new_cache: ICache[] = [];
 
     new_cache.push(data);
 
-    writeFileSync(`${home}/.gascache.json`, JSON.stringify(new_cache), { encoding: 'utf-8' });
+    writeFileSync(`${home}/.gascache.json`, JSON.stringify(new_cache), {
+      encoding: 'utf-8',
+    });
   }
-}
+};

@@ -14,7 +14,7 @@ export const ssh_keys_delete = async (users: IEntry[]): Promise<string[]> => {
       let accumulate = accm;
 
       if (user.IdentityFile?.length) {
-        accumulate = [...accumulate, ...user.IdentityFile]
+        accumulate = [...accumulate, ...user.IdentityFile];
       }
 
       return accumulate;
@@ -22,7 +22,9 @@ export const ssh_keys_delete = async (users: IEntry[]): Promise<string[]> => {
 
     for (const user of users) {
       const key_path = user.IdentityFile?.[0];
-      const nonoriginal_key = key_path ? !backup_keys.includes(key_path) : false;
+      const nonoriginal_key = key_path
+        ? !backup_keys.includes(key_path)
+        : false;
 
       if (!!key_path && nonoriginal_key) {
         const home = os.homedir();
@@ -46,4 +48,4 @@ export const ssh_keys_delete = async (users: IEntry[]): Promise<string[]> => {
   } catch (error: unknown) {
     return [];
   }
-}
+};

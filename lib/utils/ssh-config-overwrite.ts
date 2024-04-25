@@ -5,7 +5,10 @@ import SSHConfig from 'ssh-config';
 
 import { IEntry } from '../types/entry.js';
 
-export const ssh_config_overwrite = async (users: IEntry[], addl?: Record<string, string | string[]>) => {
+export const ssh_config_overwrite = async (
+  users: IEntry[],
+  addl?: Record<string, string | string[]>
+) => {
   try {
     const home = os.homedir();
 
@@ -15,7 +18,7 @@ export const ssh_config_overwrite = async (users: IEntry[], addl?: Record<string
       config.append({
         ...u,
       });
-    })
+    });
 
     if (!!addl && addl.IdentityFile?.[0]) {
       config.append(addl);
@@ -23,8 +26,8 @@ export const ssh_config_overwrite = async (users: IEntry[], addl?: Record<string
       execSync(`ssh-add ${addl.IdentityFile[0]}`, { stdio: [] });
     }
 
-    writeFileSync(`${home}/.ssh/config`, SSHConfig.stringify(config), { encoding: 'utf-8' });
-  } catch (error: unknown) {
-
-  }
-}
+    writeFileSync(`${home}/.ssh/config`, SSHConfig.stringify(config), {
+      encoding: 'utf-8',
+    });
+  } catch (error: unknown) {}
+};
