@@ -6,6 +6,7 @@ import {
   log,
   password,
   select,
+  selectKey,
   text,
 } from '@clack/prompts';
 import chalk from 'chalk';
@@ -13,7 +14,13 @@ import chalk from 'chalk';
 import { IEntry } from './types/entry.js';
 import { HOSTS } from './consts/hosts.js';
 import { color_scheme } from './consts/banner.js';
-import { NEW_SSH_USER, GITHUB, GITLAB } from './types/symbols.js';
+import {
+  NEW_SSH_USER,
+  GITHUB,
+  GITLAB,
+  KEYCHAIN_YES,
+  KEYCHAIN_NO,
+} from './types/symbols.js';
 import { gas_cache_check } from './utils/gas-cache-check.js';
 import { gas_cache_create } from './utils/gas-cache-create.js';
 import { git_config_set } from './utils/git-config-set.js';
@@ -208,7 +215,22 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
       HostName: HOSTS[questions.host]['site'],
     };
 
-    await ssh_keys_add_to_agent(key);
+    const keychain = await select({
+      message: `Do you want to save your passphrase in Keychain?`,
+      options: [
+        { value: KEYCHAIN_YES, label: 'Yes', hint: 'recommended' },
+        { value: KEYCHAIN_NO, label: 'No' },
+      ],
+    });
+
+    if (isCancel(keychain)) {
+      cancel('Operation cancelled');
+      return process.exit(0);
+    }
+
+    const add_keychain = keychain === KEYCHAIN_YES;
+
+    await ssh_keys_add_to_agent(key, add_keychain);
     await ssh_config_overwrite(opts.users, new_entry);
     await git_config_set(questions.username);
   }
