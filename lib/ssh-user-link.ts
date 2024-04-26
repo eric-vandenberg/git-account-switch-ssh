@@ -6,7 +6,6 @@ import {
   log,
   password,
   select,
-  selectKey,
   text,
 } from '@clack/prompts';
 import chalk from 'chalk';
