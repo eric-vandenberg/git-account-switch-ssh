@@ -18,6 +18,7 @@ import { gas_cache_check } from './utils/gas-cache-check.js';
 import { gas_cache_create } from './utils/gas-cache-create.js';
 import { git_config_set } from './utils/git-config-set.js';
 import { ssh_keys_create } from './utils/ssh-keys-create.js';
+import { ssh_keys_add_to_agent } from './utils/ssh-keys-add-to-agent.js';
 import { ssh_config_overwrite } from './utils/ssh-config-overwrite.js';
 
 interface IOptions {
@@ -207,6 +208,7 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
       HostName: HOSTS[questions.host]['site'],
     };
 
+    await ssh_keys_add_to_agent(key);
     await ssh_config_overwrite(opts.users, new_entry);
     await git_config_set(questions.username);
   }
