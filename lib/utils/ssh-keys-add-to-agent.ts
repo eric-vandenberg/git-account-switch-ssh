@@ -3,8 +3,12 @@ import { promisify } from 'node:util';
 
 const execAsync = promisify(exec);
 
-export const ssh_keys_add_to_agent = async (identity_file: string) => {
+export const ssh_keys_add_to_agent = async (
+  identity_file: string,
+  keychain: boolean = false
+) => {
   try {
+    const keychain_flag = keychain ? '--apple-use-keychain ' : '';
     const ssh_agent = execAsync('ssh-add -l')
       .then(() => true)
       .catch(() => false);
@@ -13,6 +17,6 @@ export const ssh_keys_add_to_agent = async (identity_file: string) => {
       execSync('eval "$(ssh-agent -s)"', { stdio: [] });
     }
 
-    execSync(`ssh-add ${identity_file}`, { stdio: [] });
+    execSync(`ssh-add ${keychain_flag}${identity_file}`, { stdio: [] });
   } catch (error: unknown) {}
 };
