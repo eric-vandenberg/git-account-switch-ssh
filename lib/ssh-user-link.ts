@@ -177,13 +177,17 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
     email: questions.email,
   };
 
-  log.step(`${JSON.stringify(cache_entry, null, 2)}`);
+  log.info(`Host: ${cache_entry.host}`);
+  log.info(`Username: ${cache_entry.username}`);
+  log.info(`Name: ${cache_entry.name}`);
+  log.info(`Email: ${cache_entry.email}`);
 
   const confirmed = await confirm({
-    message: `Does the information above look correct?`,
+    message: `Does this information look correct?`,
+    initialValue: false,
   });
 
-  if (isCancel(confirmed)) {
+  if (!confirmed) {
     cancel('Operation cancelled');
     return process.exit(0);
   }
