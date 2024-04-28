@@ -42,14 +42,13 @@ export const ssh_keys_create = async (options: {
 
     const confirmed = await confirm({
       message: "Confirm once you've copied and saved your key",
+      initialValue: false,
     });
 
-    if (isCancel(confirmed)) {
+    if (!confirmed) {
       cancel('Operation cancelled');
       return process.exit(0);
-    }
-
-    if (confirmed) {
+    } else {
       await ssh_keyscan_known_hosts(options.host);
     }
 
