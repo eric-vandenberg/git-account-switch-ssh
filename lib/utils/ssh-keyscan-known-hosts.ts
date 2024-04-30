@@ -1,4 +1,4 @@
-import os from 'node:os';
+import { homedir } from 'node:os';
 import { existsSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 
@@ -9,7 +9,7 @@ export const ssh_keyscan_known_hosts = async (
   host: TGithub | TGitlab
 ): Promise<void> => {
   try {
-    const home = os.homedir();
+    const home = homedir();
     const known_hosts_abs_path = `${home}/.ssh/known_hosts`;
 
     if (existsSync(known_hosts_abs_path)) {

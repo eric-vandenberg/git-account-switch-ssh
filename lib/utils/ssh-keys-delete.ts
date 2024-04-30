@@ -1,4 +1,4 @@
-import os from 'node:os';
+import { homedir } from 'node:os';
 import { execSync } from 'node:child_process';
 import { existsSync, unlinkSync } from 'node:fs';
 
@@ -27,7 +27,7 @@ export const ssh_keys_delete = async (users: IEntry[]): Promise<string[]> => {
         : false;
 
       if (!!key_path && nonoriginal_key) {
-        const home = os.homedir();
+        const home = homedir();
         const filename = key_path.split('/').pop();
         const key_abs_path = `${home}/.ssh/${filename}`;
         const public_key_abs_path = `${key_abs_path}.pub`;
