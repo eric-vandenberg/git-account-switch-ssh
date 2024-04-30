@@ -1,4 +1,4 @@
-import os from 'node:os';
+import { homedir } from 'node:os';
 import { accessSync, readFileSync, constants } from 'node:fs';
 import { parse, Directive } from 'ssh-config';
 
@@ -6,7 +6,7 @@ import { IEntry } from '../types/entry.js';
 
 export const ssh_config_check = async (): Promise<IEntry[]> => {
   try {
-    const home = os.homedir();
+    const home = homedir();
     accessSync(`${home}/.ssh/config`, constants.R_OK | constants.W_OK);
 
     const file = readFileSync(`${home}/.ssh/config`, { encoding: 'utf-8' });

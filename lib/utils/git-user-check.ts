@@ -1,8 +1,8 @@
-import os from 'node:os';
+import { homedir } from 'node:os';
 import { accessSync, readFileSync, constants } from 'node:fs';
 
 export const git_user_check = async (path: string) => {
-  const home = os.homedir();
+  const home = homedir();
   const global_path = `${home}/.gitconfig`;
   const local_path = `${path}/.git/config`;
   let skip_global = false;

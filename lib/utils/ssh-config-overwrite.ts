@@ -1,4 +1,4 @@
-import os from 'node:os';
+import { homedir } from 'node:os';
 import { writeFileSync } from 'node:fs';
 import SSHConfig from 'ssh-config';
 
@@ -9,7 +9,7 @@ export const ssh_config_overwrite = async (
   new_entry?: Record<string, string | string[]>
 ) => {
   try {
-    const home = os.homedir();
+    const home = homedir();
 
     const config = new SSHConfig();
 

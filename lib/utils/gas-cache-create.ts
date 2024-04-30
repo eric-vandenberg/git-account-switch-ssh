@@ -1,10 +1,10 @@
+import { homedir } from 'node:os';
 import { accessSync, readFileSync, writeFileSync, constants } from 'node:fs';
-import os from 'node:os';
 
 import { ICache } from '../types/cache.js';
 
 export const gas_cache_create = async (data: ICache) => {
-  const home = os.homedir();
+  const home = homedir();
 
   try {
     accessSync(`${home}/.gascache.json`, constants.R_OK | constants.W_OK);
