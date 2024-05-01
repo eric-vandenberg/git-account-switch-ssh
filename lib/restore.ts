@@ -11,8 +11,8 @@ export const restore = async (users: IEntry[]) => {
     const restored_config = await ssh_config_restore();
     await gas_cache_delete();
 
-    log.step(`Removing keys:\n\n${deleted_keys.join('\n')}`);
+    log.info(`Removing keys:\n\n${deleted_keys.join('\n')}`);
 
-    log.step(`Restoring ssh config:\n\n${restored_config}`);
+    log.info(`Restoring SSH config:\n\n${restored_config}`);
   } catch (error: unknown) {}
 };

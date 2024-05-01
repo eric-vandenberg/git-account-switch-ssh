@@ -17,7 +17,7 @@ export const clone_repo_user_link = async (
       (account: IEntry) => account?.User === username
     );
 
-    if (!!entry && entry.IdentityFile?.[0]) {
+    if (entry?.IdentityFile?.[0]) {
       execSync(
         `GIT_SSH_COMMAND="ssh -o IdentitiesOnly=yes -i ${entry.IdentityFile[0]} -F /dev/null" git clone ${repository}`,
         { stdio: [] }
@@ -29,7 +29,7 @@ export const clone_repo_user_link = async (
         `
       Repository cloned
       \n
-      ${chalk.inverse.bold('cd ') + chalk.inverse.bold(project)}
+      ${chalk.inverse('cd ') + chalk.inverse(project)}
       \n
     `,
         'Success'

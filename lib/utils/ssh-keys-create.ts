@@ -25,7 +25,7 @@ export const ssh_keys_create = async (options: {
       `
       Open a new shell and run this command to copy your public key:
       \n
-      ${chalk.inverse.bold(copy_command)}
+      ${chalk.inverse(copy_command)}
       \n
       Now head over to ${chalk.blue.underline(HOSTS[options.host]['keys'])}
       \n
@@ -42,7 +42,7 @@ export const ssh_keys_create = async (options: {
 
     const confirmed = await confirm({
       message: "Confirm once you've copied and saved your key",
-      initialValue: false,
+      initialValue: true,
     });
 
     if (!confirmed) {

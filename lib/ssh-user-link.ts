@@ -44,12 +44,12 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
   }));
 
   const link = await select({
-    message: `Which ssh user do you want linked to ${chalk
+    message: `Which git account do you want linked to ${chalk
       .hex(color_scheme.red)
       .bold(opts.project)}`,
     options: [
       ...options,
-      { value: NEW_SSH_USER, label: 'Setup a new ssh user' },
+      { value: NEW_SSH_USER, label: 'Setup SSH for another git account' },
     ],
   });
 
@@ -94,13 +94,13 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
           name: () =>
             text({
               message: 'What is your name?',
-              placeholder: `${name}`,
+              placeholder: name ? `${name}` : '',
             }),
 
           email: () =>
             text({
               message: 'What is your primary email for this git account?',
-              placeholder: `${email}`,
+              placeholder: email ? `${email}` : '',
             }),
         },
         {
@@ -147,18 +147,18 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
       name: () =>
         text({
           message: "What's your full name?",
-          placeholder: 'First Last',
+          placeholder: 'Firstname Lastname',
         }),
 
       email: () =>
         text({
           message: 'What is your primary email for this git account?',
-          placeholder: 'first.last@email.com',
+          placeholder: 'example@email.com',
         }),
 
       passphrase: () =>
         password({
-          message: 'Enter a passphrase to protect your ssh keys',
+          message: 'Enter a passphrase to protect your SSH keys',
           mask: '*',
         }),
     },
@@ -184,7 +184,7 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
 
   const confirmed = await confirm({
     message: `Does this information look correct?`,
-    initialValue: false,
+    initialValue: true,
   });
 
   if (!confirmed) {
@@ -200,7 +200,7 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
   );
 
   if (existing_record) {
-    cancel("It looks like you've already setup this user");
+    cancel("It looks like you've already setup this git account");
     return process.exit(0);
   } else {
     await gas_cache_create(cache_entry);
@@ -219,7 +219,7 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
     };
 
     const keychain = await select({
-      message: `Do you want to save your passphrase in Keychain?`,
+      message: `Do you want to save your passphrase in Apple Keychain?`,
       options: [
         { value: KEYCHAIN_YES, label: 'Yes', hint: 'recommended' },
         { value: KEYCHAIN_NO, label: 'No' },

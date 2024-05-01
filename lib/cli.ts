@@ -4,17 +4,18 @@ import { intro, text, isCancel, cancel, spinner, outro } from '@clack/prompts';
 import gradient from 'gradient-string';
 import chalk from 'chalk';
 
-import { version } from '../package.json';
+import { version, homepage } from '../package.json';
 import { IEntry } from './types/entry.js';
 import { title, color_scheme } from './consts/banner.js';
 import { restore } from './restore.js';
 import { ssh_user_link } from './ssh-user-link.js';
 import { clone_repo_user_link } from './clone-repo-user-link.js';
-import { git_repo_check } from './utils/git-repo-check.js';
-import { ssh_config_backup } from './utils/ssh-config-backup.js';
+import { os_check } from './utils/os-check.js';
 import { ssh_config_check } from './utils/ssh-config-check.js';
 import { ssh_keys_check } from './utils/ssh-keys-check.js';
+import { git_repo_check } from './utils/git-repo-check.js';
 import { git_user_check } from './utils/git-user-check.js';
+import { ssh_config_backup } from './utils/ssh-config-backup.js';
 import { ssh_user_check } from './utils/ssh-user-check.js';
 
 const banner = async () => {
@@ -24,6 +25,18 @@ const banner = async () => {
 };
 
 const init = async () => {
+  const unix = await os_check();
+
+  if (!unix) {
+    console.log(
+      `MacOS support only. 🙏 see ${chalk.blue.underline(
+        homepage
+      )} to contribute.`
+    );
+
+    return process.exit(0);
+  }
+
   const accounts = await ssh_config_check();
   const keys = await ssh_keys_check();
   const gitrepo = await git_repo_check();
@@ -51,34 +64,32 @@ const main = async (prechecks: {
   let linked_user;
   let project: string = '';
   const is_repo = prechecks.gitrepo.length > 1;
-  const s = spinner();
+  const spin = spinner();
 
   intro(
     is_repo
-      ? 'Link an ssh user to this repository'
-      : 'Clone a new repository and link an ssh user'
+      ? 'Add a git account and/or link SSH to this repository'
+      : 'Clone a new repository and link SSH'
   );
 
-  s.start('Checking for existing ssh users');
+  spin.start('Checking for git accounts with SSH access');
 
   const users: IEntry[] = await ssh_user_check(prechecks.accounts);
 
-  s.stop(
+  spin.stop(
     users.length
-      ? `Found ${users.length} user${users.length > 1 ? 's' : ''}!`
-      : "No users found. Let's set one up!"
+      ? `Found ${users.length} git account${users.length > 1 ? 's' : ''}!`
+      : "No git accounts have SSH access. Let's set one up!"
   );
 
-  // restore ssh configuration to original
   if (process.argv?.[2] === 'restore') {
     await restore(users);
 
-    outro('Restored!');
+    outro('Restore complete!');
 
     return process.exit(0);
   }
 
-  // link a ssh user to an existing git repo
   if (is_repo) {
     project = prechecks.gitrepo.split('/').pop() ?? '';
 
@@ -112,7 +123,7 @@ const main = async (prechecks: {
   outro(
     `User ${chalk
       .hex(color_scheme.green)
-      .bold(linked_user)} is all setup for repo ${chalk
+      .bold(linked_user)} is all setup for repository ${chalk
       .hex(color_scheme.red)
       .bold(project)}`
   );
