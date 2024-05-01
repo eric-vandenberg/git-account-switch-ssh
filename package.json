@@ -32,7 +32,7 @@
     "type": "git",
     "url": "git@github.com:eric-vandenberg/git-account-switch-ssh.git"
   },
-  "homepage": "https://github.com/Eric-Vandenberg/git-account-switch-ssh#readme",
+  "homepage": "https://github.com/eric-vandenberg/git-account-switch-ssh#readme",
   "dependencies": {
     "@clack/core": "^0.3.4",
     "@clack/prompts": "^0.7.0",
