@@ -9,7 +9,7 @@ export const ssh_keys_add_to_agent = async (
 ) => {
   try {
     const keychain_flag = keychain ? '--apple-use-keychain ' : '';
-    const ssh_agent = execAsync('ssh-add -l')
+    const ssh_agent = await execAsync('ssh-add -l')
       .then(() => true)
       .catch(() => false);
 
