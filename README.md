@@ -1,18 +1,22 @@
 # Git Account Switch SSH
 
-A CLI created to help manage multiple Github or Gitlab accounts. This tool will configure your SSH config with multiple git accounts. You decide which git account to link at the **repository level**.
+<p align="center">A CLI created to help manage multiple **Github** or **Gitlab** accounts. This tool will configure your SSH config with multiple git accounts. You decide which account to link at the **repository level**.</p>
+
+<br />
 
 ## Usage
 
-### Add a git account and/or link SSH to an existing repository
+<br />
+
+### Link SSH to an existing repository
 
 **Demo**
 
-If you already have an existing repository cloned locally, you can set a specific git account to interact with it's remote. Feel free to switch back and forth from one git account to another if they both have access to the remote repository. Run the command below to select an existing git account with SSH access, or add a new git account and easily setup it's SSH keys. Once you've added or selected a git account, a few things will happen:
+If you already have an existing repository cloned locally, you can set a specific git account to interact with it's remote. Feel free to switch back and forth from one git account to another if they both have access to the remote repository. Run the command below to select an existing account with SSH access, or add a new git account and easily setup it's SSH keys. Once you've added or selected an account, a few things will be set in your project's local git config:
 
-1. Your full name will be set in the local git config and used for future commits.
-2. Your primary email for the selected git account will be set in the local git config and used for future commits.
-3. An sshCommand will be set in the local git config, linking the appropriate SSH keys for your selected git account. This will allow SSH access to `git pull`, `git push`, `git fetch`, etc
+1. Your full name will be set and used for future commits.
+2. Your primary email for the selected git account will be set and used for future commits.
+3. An sshCommand will be set, linking the appropriate SSH keys for your selected git account. This will allow SSH access to `git pull`, `git push`, `git fetch`, etc
 
 > Within an existing git repository
 >
@@ -20,16 +24,17 @@ If you already have an existing repository cloned locally, you can set a specifi
 > gas
 > ```
 
+<br />
+
 ### Clone a new repository and link SSH
 
 **Demo**
 
-If you want to clone a new repository, you can select or add a git account to do so. By cloning with a specified git account, the repository will already be configured with SSH for the git account you've selected. If at any time you want to make commits from another git account, simply run `gas` in the root of the project and select another one. When you clone a new repository, a few things will happen:
+If you want to clone a new repository, you can select or add a git account to do so. By cloning with a specified account, the repository will already be configured with SSH. If at any time you want to make commits from another git account, simply run `gas` in the root of the project and select another one. The CLI will use a custom command to clone the repository based on the account you've selected. Once cloning completes, a few things will be set in your project's local git config:
 
-1. The CLI will use a custom command to clone the repository based on the selected git account.
-2. Your full name will be set in the local git config and used for future commits.
-3. Your primary email for the selected git account will be set in the local git config and used for future commits.
-4. An sshCommand will be set in the local git config, linking the appropriate SSH keys for your selected git account. This will allow SSH access to `git pull`, `git push`, `git fetch`, etc
+1. Your full name will be set and used for future commits.
+2. Your primary email for the selected git account will be set and used for future commits.
+3. An sshCommand will be set, linking the appropriate SSH keys for your selected git account. This will allow SSH access to `git pull`, `git push`, `git fetch`, etc
 
 > Outside of a git repository
 >
@@ -37,11 +42,14 @@ If you want to clone a new repository, you can select or add a git account to do
 > gas
 > ```
 
+<br />
+<br />
+
 ## Installation
 
-> ```sh
-> npm i -g git-account-switch-ssh
-> ```
+```sh
+npm i -g git-account-switch-ssh
+```
 
 ## License
 
@@ -65,7 +73,10 @@ MIT © Eric Vandenberg
   - generate keys with unique identifier
   - find and replace in ssh config
 
-### Restore to original SSH configuration
+<br />
+<br />
+
+## Restore to original SSH configuration
 
 **Demo**
 
