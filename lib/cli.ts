@@ -6,6 +6,7 @@ import chalk from 'chalk';
 
 import { version, homepage } from '../package.json';
 import { IEntry } from './types/entry.js';
+import { IGitConfig } from './types/gitconfig.js';
 import { title, color_scheme } from './consts/banner.js';
 import { restore } from './restore.js';
 import { ssh_user_link } from './ssh-user-link.js';
@@ -56,10 +57,7 @@ const main = async (prechecks: {
   accounts: IEntry[];
   keys: string[];
   gitrepo: string;
-  gitconfig: {
-    global: { email?: string; user?: string };
-    local: { email?: string; user?: string };
-  };
+  gitconfig: IGitConfig;
 }) => {
   let linked_user;
   let project: string = '';
@@ -68,7 +66,7 @@ const main = async (prechecks: {
 
   intro(
     is_repo
-      ? 'Add a git account and/or link SSH to this repository'
+      ? 'Link SSH to this repository'
       : 'Clone a new repository and link SSH'
   );
 
@@ -78,8 +76,8 @@ const main = async (prechecks: {
 
   spin.stop(
     users.length
-      ? `Found ${users.length} git account${users.length > 1 ? 's' : ''}!`
-      : "No git accounts have SSH access. Let's set one up!"
+      ? `Found ${users.length} account${users.length > 1 ? 's' : ''}!`
+      : "No accounts have SSH access. Let's set one up!"
   );
 
   if (process.argv?.[2] === 'restore') {
