@@ -1,29 +1,22 @@
 import { homedir } from 'node:os';
 import { accessSync, readFileSync, constants } from 'node:fs';
 
-export const git_user_check = async (path: string) => {
+import { IGitConfig } from '../types/gitconfig.js';
+
+export const git_user_check = async (path: string): Promise<IGitConfig> => {
   const home = homedir();
   const global_path = `${home}/.gitconfig`;
   const local_path = `${path}/.git/config`;
   let skip_global = false;
   let skip_local = false;
-  const result: {
-    global: {
-      email?: string;
-      user?: string;
-    };
-    local: {
-      email?: string;
-      user?: string;
-    };
-  } = {
+  const result: IGitConfig = {
     global: {
       email: undefined,
-      user: undefined,
+      name: undefined,
     },
     local: {
       email: undefined,
-      user: undefined,
+      name: undefined,
     },
   };
 
@@ -49,30 +42,35 @@ export const git_user_check = async (path: string) => {
 
   const eregex = /email\s=\s(.*?)$/ms;
   const uregex = /name\s=\s(.*?)$/ms;
+  const sregex =
+    /sshCommand\s=\sssh\s-o\sIdentitiesOnly=yes\s-i\s(.*?)\s-F\s\/dev\/null$/ms;
 
   if (!skip_global) {
     const gconfig = readFileSync(global_path, { encoding: 'utf-8' });
     const gemail_match = gconfig.match(eregex);
-    const guser_match = gconfig.match(uregex);
+    const gname_match = gconfig.match(uregex);
     const gemail = gemail_match ? gemail_match[1] : undefined;
-    const guser = guser_match ? guser_match[1] : undefined;
+    const gname = gname_match ? gname_match[1] : undefined;
 
     result.global = {
       email: gemail,
-      user: guser,
+      name: gname,
     };
   }
 
   if (!skip_local) {
     const lconfig = readFileSync(local_path, { encoding: 'utf-8' });
     const lemail_match = lconfig.match(eregex);
-    const luser_match = lconfig.match(uregex);
+    const lname_match = lconfig.match(uregex);
+    const lkey_match = lconfig.match(sregex);
     const lemail = lemail_match ? lemail_match[1] : undefined;
-    const luser = luser_match ? luser_match[1] : undefined;
+    const lname = lname_match ? lname_match[1] : undefined;
+    const lkey = lkey_match ? lkey_match[1] : undefined;
 
     result.local = {
       email: lemail,
-      user: luser,
+      name: lname,
+      key: lkey,
     };
   }
 

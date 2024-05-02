@@ -11,6 +11,7 @@ import {
 import chalk from 'chalk';
 
 import { IEntry } from './types/entry.js';
+import { IGitConfig } from './types/gitconfig.js';
 import { HOSTS } from './consts/hosts.js';
 import { color_scheme } from './consts/banner.js';
 import {
@@ -30,18 +31,24 @@ import { ssh_config_overwrite } from './utils/ssh-config-overwrite.js';
 interface IOptions {
   project: string;
   users: IEntry[];
-  gitconfig: {
-    global: { email?: string; user?: string };
-    local: { email?: string; user?: string };
-  };
+  gitconfig: IGitConfig;
 }
 
 export const ssh_user_link = async (opts: IOptions): Promise<string> => {
   let username: string;
-  const options = opts.users.map((user: IEntry) => ({
-    value: user.User as string,
-    label: `${user.User}${user?.HostName ? ' (' + user.HostName + ')' : ''}`,
-  }));
+  const options = opts.users.map((user: IEntry) => {
+    const current = user.IdentityFile?.[0] === opts.gitconfig.local.key;
+    const account = current
+      ? chalk.hex(color_scheme.green).bold(user.User as string)
+      : (user.User as string);
+    const label = `${account}${
+      user?.HostName ? ' (' + user.HostName + ')' : ''
+    }`;
+    return {
+      value: user.User as string,
+      label,
+    };
+  });
 
   const link = await select({
     message: `Which git account do you want linked to ${chalk
@@ -49,7 +56,10 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
       .bold(opts.project)}`,
     options: [
       ...options,
-      { value: NEW_SSH_USER, label: 'Setup SSH for another git account' },
+      {
+        value: NEW_SSH_USER,
+        label: 'Setup SSH for another git account',
+      },
     ],
   });
 
@@ -72,7 +82,7 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
       }) => entry.username === username
     );
 
-    const name = opts.gitconfig.local.user ?? opts.gitconfig.global.user;
+    const name = opts.gitconfig.local.name ?? opts.gitconfig.global.name;
     const email = opts.gitconfig.local.email ?? opts.gitconfig.global.email;
 
     if (!record) {
