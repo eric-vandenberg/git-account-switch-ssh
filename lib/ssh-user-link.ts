@@ -12,8 +12,6 @@ import chalk from 'chalk';
 
 import { IEntry } from './types/entry.js';
 import { IGitConfig } from './types/gitconfig.js';
-import { HOSTS } from './consts/hosts.js';
-import { color_scheme } from './consts/banner.js';
 import {
   NEW_SSH_USER,
   GITHUB,
@@ -21,6 +19,9 @@ import {
   KEYCHAIN_YES,
   KEYCHAIN_NO,
 } from './types/symbols.js';
+import { ICache } from './types/cache.js';
+import { HOSTS } from './consts/hosts.js';
+import { color_scheme } from './consts/banner.js';
 import { gas_cache_check } from './utils/gas-cache-check.js';
 import { gas_cache_create } from './utils/gas-cache-create.js';
 import { git_config_set } from './utils/git-config-set.js';
@@ -37,7 +38,9 @@ interface IOptions {
 export const ssh_user_link = async (opts: IOptions): Promise<string> => {
   let username: string;
   const options = opts.users.map((user: IEntry) => {
-    const current = user.IdentityFile?.[0] === opts.gitconfig.local.key;
+    const current =
+      user.IdentityFile?.[0] &&
+      user.IdentityFile?.[0] === opts.gitconfig.local.key;
     const account = current
       ? chalk.hex(color_scheme.green).bold(user.User as string)
       : (user.User as string);
@@ -73,14 +76,7 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
 
     const cache = await gas_cache_check();
 
-    const record = cache.find(
-      (entry: {
-        host: string;
-        username: string;
-        name: string;
-        email: string;
-      }) => entry.username === username
-    );
+    const record = cache.find((item: ICache) => item.username === username);
 
     const name = opts.gitconfig.local.name ?? opts.gitconfig.global.name;
     const email = opts.gitconfig.local.email ?? opts.gitconfig.global.email;
@@ -204,9 +200,9 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
 
   const existing_cache = await gas_cache_check();
   const existing_record = existing_cache.find(
-    (entry: { host: string; username: string; name: string; email: string }) =>
-      entry.username === questions.username &&
-      entry.host === HOSTS[questions.host]['site']
+    (item: ICache) =>
+      item.username === questions.username &&
+      item.host === HOSTS[questions.host]['site']
   );
 
   if (existing_record) {
