@@ -16,7 +16,7 @@
 
 <br />
 
-![](assets/add-werkiwerk.gif)
+<p align="center"><img src="assets/add-werkiwerk.gif" /></p>
 
 <br />
 
@@ -40,7 +40,7 @@ If you already have an existing repository cloned locally, you can set a specifi
 
 <br />
 
-![](assets/clone-san-junipero.gif)
+<p align="center"><img src="assets/clone-san-junipero.gif" /></p>
 
 <br />
 
