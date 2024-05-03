@@ -1,6 +1,8 @@
-# Git Account Switch SSH
+<p align="center"><img src="https://quintessence-assets.s3.us-west-1.amazonaws.com/git-account-switch-ssh.png" /></p>
 
-<p align="center">A CLI created to help manage multiple **Github** or **Gitlab** accounts. This tool will configure your SSH config with multiple git accounts. You decide which account to link at the **repository level**.</p>
+<br />
+
+<p align="center">A CLI created to help manage multiple <strong>Github</strong> or <strong>Gitlab</strong> accounts. This tool will configure your SSH config with multiple git accounts. You decide which account to link at the <strong>repository level</strong>.</p>
 
 <br />
 
@@ -11,6 +13,12 @@
 ### Link SSH to an existing repository
 
 **Demo**
+
+<br />
+
+<p align="center"><img src="https://quintessence-assets.s3.us-west-1.amazonaws.com/add-werkiwerk.gif" /></p>
+
+<br />
 
 If you already have an existing repository cloned locally, you can set a specific git account to interact with it's remote. Feel free to switch back and forth from one git account to another if they both have access to the remote repository. Run the command below to select an existing account with SSH access, or add a new git account and easily setup it's SSH keys. Once you've added or selected an account, a few things will be set in your project's local git config:
 
@@ -29,6 +37,12 @@ If you already have an existing repository cloned locally, you can set a specifi
 ### Clone a new repository and link SSH
 
 **Demo**
+
+<br />
+
+<p align="center"><img src="https://quintessence-assets.s3.us-west-1.amazonaws.com/clone-san-junipero.gif" /></p>
+
+<br />
 
 If you want to clone a new repository, you can select or add a git account to do so. By cloning with a specified account, the repository will already be configured with SSH. If at any time you want to make commits from another git account, simply run `gas` in the root of the project and select another one. The CLI will use a custom command to clone the repository based on the account you've selected. Once cloning completes, a few things will be set in your project's local git config:
 
