@@ -1,4 +1,4 @@
-<p align="center"><img src="https://quintessence-assets.s3.us-west-1.amazonaws.com/git-account-switch-ssh.png" /></p>
+<p align="center"><img src="assets/git-account-switch-ssh.png" /></p>
 
 <br />
 
@@ -16,7 +16,7 @@
 
 <br />
 
-![](https://quintessence-assets.s3.us-west-1.amazonaws.com/add-werkiwerk.gif)
+![](assets/add-werkiwerk.gif)
 
 <br />
 
@@ -40,7 +40,7 @@ If you already have an existing repository cloned locally, you can set a specifi
 
 <br />
 
-![](https://quintessence-assets.s3.us-west-1.amazonaws.com/clone-san-junipero.gif)
+![](assets/clone-san-junipero.gif)
 
 <br />
 
