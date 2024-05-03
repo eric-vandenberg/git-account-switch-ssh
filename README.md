@@ -16,7 +16,7 @@
 
 <br />
 
-<p align="center"><img src="https://quintessence-assets.s3.us-west-1.amazonaws.com/add-werkiwerk.gif" /></p>
+![](https://quintessence-assets.s3.us-west-1.amazonaws.com/add-werkiwerk.gif)
 
 <br />
 
@@ -40,7 +40,7 @@ If you already have an existing repository cloned locally, you can set a specifi
 
 <br />
 
-<p align="center"><img src="https://quintessence-assets.s3.us-west-1.amazonaws.com/clone-san-junipero.gif" /></p>
+![](https://quintessence-assets.s3.us-west-1.amazonaws.com/clone-san-junipero.gif)
 
 <br />
 
