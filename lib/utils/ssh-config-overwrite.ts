@@ -10,7 +10,6 @@ export const ssh_config_overwrite = async (
 ) => {
   try {
     const home = homedir();
-
     const config = new SSHConfig();
 
     users.forEach((u: IEntry) => {

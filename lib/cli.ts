@@ -115,7 +115,11 @@ const main = async (prechecks: {
       gitconfig: prechecks.gitconfig,
     });
 
-    await clone_repo_user_link(repository.toString(), project, linked_user);
+    await clone_repo_user_link({
+      repository: repository.toString(),
+      project,
+      username: linked_user,
+    });
   }
 
   outro(

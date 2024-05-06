@@ -6,11 +6,17 @@ import { IEntry } from './types/entry.js';
 import { ssh_config_check } from './utils/ssh-config-check.js';
 import { git_config_set } from './utils/git-config-set.js';
 
-export const clone_repo_user_link = async (
-  repository: string,
-  project: string,
-  username: string
-) => {
+interface ICloneOptions {
+  repository: string;
+  project: string;
+  username: string;
+}
+
+export const clone_repo_user_link = async ({
+  repository,
+  project,
+  username,
+}: ICloneOptions) => {
   try {
     const accounts = await ssh_config_check();
     const entry = accounts.find(

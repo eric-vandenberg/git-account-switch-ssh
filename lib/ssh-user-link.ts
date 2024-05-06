@@ -29,18 +29,21 @@ import { ssh_keys_create } from './utils/ssh-keys-create.js';
 import { ssh_keys_add_to_agent } from './utils/ssh-keys-add-to-agent.js';
 import { ssh_config_overwrite } from './utils/ssh-config-overwrite.js';
 
-interface IOptions {
+interface ILinkOptions {
   project: string;
   users: IEntry[];
   gitconfig: IGitConfig;
 }
 
-export const ssh_user_link = async (opts: IOptions): Promise<string> => {
+export const ssh_user_link = async ({
+  project,
+  users,
+  gitconfig,
+}: ILinkOptions): Promise<string> => {
   let username: string;
-  const options = opts.users.map((user: IEntry) => {
+  const options = users.map((user: IEntry) => {
     const current =
-      user.IdentityFile?.[0] &&
-      user.IdentityFile?.[0] === opts.gitconfig.local.key;
+      user.IdentityFile?.[0] && user.IdentityFile?.[0] === gitconfig.local.key;
     const account = current
       ? chalk.hex(color_scheme.green).bold(user.User as string)
       : (user.User as string);
@@ -56,7 +59,7 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
   const link = await select({
     message: `Which git account do you want linked to ${chalk
       .hex(color_scheme.red)
-      .bold(opts.project)}`,
+      .bold(project)}`,
     options: [
       ...options,
       {
@@ -78,8 +81,8 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
 
     const record = cache.find((item: ICache) => item.username === username);
 
-    const name = opts.gitconfig.local.name ?? opts.gitconfig.global.name;
-    const email = opts.gitconfig.local.email ?? opts.gitconfig.global.email;
+    const name = gitconfig.local.name ?? gitconfig.global.name;
+    const email = gitconfig.local.email ?? gitconfig.global.email;
 
     if (!record) {
       const retro = await group(
@@ -125,7 +128,7 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
       });
     }
 
-    await ssh_config_overwrite(opts.users);
+    await ssh_config_overwrite(users);
     await git_config_set(username);
 
     return username;
@@ -240,7 +243,7 @@ export const ssh_user_link = async (opts: IOptions): Promise<string> => {
     const add_keychain = keychain === KEYCHAIN_YES;
 
     await ssh_keys_add_to_agent(key, add_keychain);
-    await ssh_config_overwrite(opts.users, new_entry);
+    await ssh_config_overwrite(users, new_entry);
     await git_config_set(questions.username);
   }
 
