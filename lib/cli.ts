@@ -19,6 +19,13 @@ import { git_user_check } from './utils/git-user-check.js';
 import { ssh_config_backup } from './utils/ssh-config-backup.js';
 import { ssh_user_check } from './utils/ssh-user-check.js';
 
+interface IPrechecks {
+  accounts: IEntry[];
+  keys: string[];
+  gitrepo: string;
+  gitconfig: IGitConfig;
+}
+
 const banner = async () => {
   const gasGradient = gradient(Object.values(color_scheme));
   console.log(gasGradient.multiline(title) + '\n');
@@ -53,15 +60,10 @@ const init = async () => {
   };
 };
 
-const main = async (prechecks: {
-  accounts: IEntry[];
-  keys: string[];
-  gitrepo: string;
-  gitconfig: IGitConfig;
-}) => {
+const main = async ({ accounts, keys, gitrepo, gitconfig }: IPrechecks) => {
   let linked_user;
   let project: string = '';
-  const is_repo = prechecks.gitrepo.length > 1;
+  const is_repo = gitrepo.length > 1;
   const spin = spinner();
 
   intro(
@@ -72,7 +74,7 @@ const main = async (prechecks: {
 
   spin.start('Checking for git accounts with SSH access');
 
-  const users: IEntry[] = await ssh_user_check(prechecks.accounts);
+  const users: IEntry[] = await ssh_user_check(accounts);
 
   spin.stop(
     users.length
@@ -89,12 +91,12 @@ const main = async (prechecks: {
   }
 
   if (is_repo) {
-    project = prechecks.gitrepo.split('/').pop() ?? '';
+    project = gitrepo.split('/').pop() ?? '';
 
     linked_user = await ssh_user_link({
       project,
       users,
-      gitconfig: prechecks.gitconfig,
+      gitconfig: gitconfig,
     });
   } else {
     const repository = await text({
@@ -112,7 +114,7 @@ const main = async (prechecks: {
     linked_user = await ssh_user_link({
       project,
       users,
-      gitconfig: prechecks.gitconfig,
+      gitconfig: gitconfig,
     });
 
     await clone_repo_user_link({
