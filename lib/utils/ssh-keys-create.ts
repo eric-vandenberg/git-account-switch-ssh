@@ -6,19 +6,27 @@ import { HOSTS } from '../consts/hosts.js';
 import { TGithub, TGitlab } from '../types/symbols.js';
 import { ssh_keyscan_known_hosts } from './ssh-keyscan-known-hosts.js';
 
-export const ssh_keys_create = async (options: {
+interface IKeysCreate {
   host: TGithub | TGitlab;
   username: string;
   name: string;
   email: string;
   passphrase: string;
-}): Promise<string | undefined> => {
+}
+
+export const ssh_keys_create = async ({
+  host,
+  username,
+  name,
+  email,
+  passphrase,
+}: IKeysCreate): Promise<string | undefined> => {
   try {
-    const key = `~/.ssh/id_ed25519_${options.username}`;
+    const key = `~/.ssh/id_ed25519_${username}`;
     const copy_command = `pbcopy < ${key}.pub`;
 
     execSync(
-      `ssh-keygen -t ed25519 -C "${options.email}" -f ${key} -P "${options.passphrase}"`
+      `ssh-keygen -t ed25519 -C "${email}" -f ${key} -P "${passphrase}"`
     );
 
     note(
@@ -27,13 +35,13 @@ export const ssh_keys_create = async (options: {
       \n
       ${chalk.inverse(copy_command)}
       \n
-      Now head over to ${chalk.blue.underline(HOSTS[options.host]['keys'])}
+      Now head over to ${chalk.blue.underline(HOSTS[host]['keys'])}
       \n
-      Click "${HOSTS[options.host]['cta']}"
+      Click "${HOSTS[host]['cta']}"
       \n
-      Give your key a Title (e.g. id_ed25519_${options.username})
+      Give your key a Title (e.g. id_ed25519_${username})
       \n
-      ${HOSTS[options.host]['usage']}
+      ${HOSTS[host]['usage']}
       \n
       Paste in your public key and save
     `,
@@ -49,7 +57,7 @@ export const ssh_keys_create = async (options: {
       cancel('Operation cancelled');
       return process.exit(0);
     } else {
-      await ssh_keyscan_known_hosts(options.host);
+      await ssh_keyscan_known_hosts(host);
     }
 
     return key;
