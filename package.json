@@ -28,10 +28,6 @@
   ],
   "author": "Eric Vandenberg (contact@ericvandenberg.com)",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:eric-vandenberg/git-account-switch-ssh.git"
-  },
   "homepage": "https://github.com/eric-vandenberg/git-account-switch-ssh#readme",
   "dependencies": {
     "@clack/core": "^0.3.4",
