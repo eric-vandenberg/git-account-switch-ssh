@@ -1,5 +1,3 @@
-<br />
-
 <p align="center">A CLI created to help manage multiple <strong>Github</strong> or <strong>Gitlab</strong> accounts. This tool will configure your SSH config with multiple git accounts. You decide which account to link at the <strong>repository level</strong>.</p>
 
 <br />
@@ -8,10 +6,17 @@
 
 <br />
 
-### Link SSH to an existing repository
+## Link SSH to an existing repository
 
-**Demo**
-![](https://quintessence-assets.s3.us-west-1.amazonaws.com/add-werkiwerk.gif)
+<br />
+
+### Demo
+
+<br />
+
+![](https://quintessence-assets.s3.us-west-1.amazonaws.com/add-werkiwerk-ssh.gif)
+
+<br />
 
 If you already have an existing repository cloned locally, you can set a specific git account to interact with it's remote. Feel free to switch back and forth from one git account to another if they both have access to the remote repository. Run the command below to select an existing account with SSH access, or add a new git account and easily setup it's SSH keys. Once you've added or selected an account, a few things will be set in your project's local git config:
 
@@ -27,10 +32,17 @@ If you already have an existing repository cloned locally, you can set a specifi
 
 <br />
 
-### Clone a new repository and link SSH
+## Clone a new repository and link SSH
 
-**Demo**
+<br />
+
+### Demo
+
+<br />
+
 ![](https://quintessence-assets.s3.us-west-1.amazonaws.com/clone-san-junipero.gif)
+
+<br />
 
 If you want to clone a new repository, you can select or add a git account to do so. By cloning with a specified account, the repository will already be configured with SSH. If at any time you want to make commits from another git account, simply run `gas` in the root of the project and select another one. The CLI will use a custom command to clone the repository based on the account you've selected. Once cloning completes, a few things will be set in your project's local git config:
 
@@ -80,8 +92,15 @@ MIT © Eric Vandenberg
 
 ## Restore to original SSH configuration
 
-**Demo**
+<br />
+
+### Demo
+
+<br />
+
 ![](https://quintessence-assets.s3.us-west-1.amazonaws.com/gas-restore.gif)
+
+<br />
 
 If you'd like to restore your computer to the original SSH configuration you had before using Git Account Switch, simply run the command below. Here are the cleanup steps you can expect:
 
