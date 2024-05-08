@@ -7,7 +7,7 @@
     "start": "jiti ./lib/cli.ts",
     "build": "tsup ./lib/",
     "local": "yarn build && sudo npm i -g",
-    "reset": "rm -rf ./node_modules ./dist ./yarn.lock && yarn"
+    "reset": "rm -rf ./node_modules ./dist ./package-lock.json && npm i"
   },
   "bin": {
     "gas": "./dist/cli.js"
