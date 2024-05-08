@@ -63,11 +63,14 @@ const init = async () => {
 const main = async ({ accounts, keys, gitrepo, gitconfig }: IPrechecks) => {
   let linked_user;
   let project: string = '';
+  const is_restore = process.argv?.[2] === 'restore';
   const is_repo = gitrepo.length > 1;
   const spin = spinner();
 
   intro(
-    is_repo
+    is_restore
+      ? 'Restoring SSH configurations'
+      : is_repo
       ? 'Link SSH to this repository'
       : 'Clone a new repository and link SSH'
   );
@@ -82,7 +85,7 @@ const main = async ({ accounts, keys, gitrepo, gitconfig }: IPrechecks) => {
       : "No accounts have SSH access. Let's set one up!"
   );
 
-  if (process.argv?.[2] === 'restore') {
+  if (is_restore) {
     await restore(users);
 
     outro('Restore complete!');
