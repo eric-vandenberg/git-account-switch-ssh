@@ -2,19 +2,35 @@
 
 <br />
 
+## Installation
+
+```sh
+npm i -g git-account-switch-ssh
+```
+
+<br />
+
+## Features
+
+<br />
+
+- Add a git account and setup SSH keys
+- Link an account per repository
+- Clone a repository with chosen account
+
 ## Usage
 
 <br />
 
-## Link SSH to an existing repository
+### Link SSH to an existing repository
 
 <br />
 
-### Demo
+#### Demo
 
 <br />
 
-![](https://quintessence-assets.s3.us-west-1.amazonaws.com/add-werkiwerk-ssh.gif)
+![](https://quintessence-assets.s3.us-west-1.amazonaws.com/add-werkiwerk-720-trim.gif)
 
 <br />
 
@@ -32,15 +48,15 @@ If you already have an existing repository cloned locally, you can set a specifi
 
 <br />
 
-## Clone a new repository and link SSH
+### Clone a new repository and link SSH
 
 <br />
 
-### Demo
+#### Demo
 
 <br />
 
-![](https://quintessence-assets.s3.us-west-1.amazonaws.com/clone-san-junipero.gif)
+![](https://quintessence-assets.s3.us-west-1.amazonaws.com/clone-san-junipero-720-trim.gif)
 
 <br />
 
@@ -57,13 +73,30 @@ If you want to clone a new repository, you can select or add a git account to do
 > ```
 
 <br />
+
+### Restore to original SSH configuration
+
 <br />
 
-## Installation
+#### Demo
 
-```sh
-npm i -g git-account-switch-ssh
-```
+<br />
+
+![](https://quintessence-assets.s3.us-west-1.amazonaws.com/gas-restore-720-trim.gif)
+
+<br />
+
+If you'd like to restore your computer to the original SSH configuration you had before using Git Account Switch, simply run the command below. Here are the cleanup steps you can expect:
+
+1. Your original SSH config will be restored to what it was before running this CLI. Any configurations created from Git Account Switch will be undone.
+2. The SSH keys generated from this CLI will be deleted. If you had any SSH keys generated before using this CLI, they'll remain in place.
+3. The Git Account Switch cache will be removed - `~/.gascache.json`
+
+> ```sh
+> gas restore
+> ```
+
+<br />
 
 ## License
 
@@ -88,26 +121,3 @@ MIT © Eric Vandenberg
   - find and replace in ssh config
 
 <br />
-<br />
-
-## Restore to original SSH configuration
-
-<br />
-
-### Demo
-
-<br />
-
-![](https://quintessence-assets.s3.us-west-1.amazonaws.com/gas-restore.gif)
-
-<br />
-
-If you'd like to restore your computer to the original SSH configuration you had before using Git Account Switch, simply run the command below. Here are the cleanup steps you can expect:
-
-1. Your original SSH config will be restored to what it was before running this CLI. Any configurations created from Git Account Switch will be undone.
-2. The SSH keys generated from this CLI will be deleted. If you had any SSH keys generated before using this CLI, they'll remain in place.
-3. The Git Account Switch cache will be removed - `~/.gascache.json`
-
-> ```sh
-> gas restore
-> ```

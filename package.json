@@ -2,10 +2,10 @@
   "name": "git-account-switch-ssh",
   "version": "1.0.0",
   "description": "Git Account Switch (SSH)",
-  "main": "dist/cli.js",
+  "main": "./dist/cli.js",
   "scripts": {
     "start": "jiti ./lib/cli.ts",
-    "build": "tsup ./lib/",
+    "build": "tsup",
     "local": "npm run build && sudo npm i -g",
     "reset": "rm -rf ./node_modules ./dist ./package-lock.json && npm i"
   },
