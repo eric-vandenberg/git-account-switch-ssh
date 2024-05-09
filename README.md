@@ -16,7 +16,9 @@ npm i -g git-account-switch-ssh
 
 - Add a git account and setup SSH keys
 - Link an account per repository
-- Clone a repository with chosen account
+- Clone a repository per account
+
+<br />
 
 ## Usage
 
@@ -24,13 +26,11 @@ npm i -g git-account-switch-ssh
 
 ### Link SSH to an existing repository
 
-<br />
-
 #### Demo
 
 <br />
 
-![](https://quintessence-assets.s3.us-west-1.amazonaws.com/add-werkiwerk-720-trim.gif)
+![](https://quintessence-assets.s3.us-west-1.amazonaws.com/add-werkiwerk-trim-720.gif)
 
 <br />
 
@@ -50,13 +50,11 @@ If you already have an existing repository cloned locally, you can set a specifi
 
 ### Clone a new repository and link SSH
 
-<br />
-
 #### Demo
 
 <br />
 
-![](https://quintessence-assets.s3.us-west-1.amazonaws.com/clone-san-junipero-720-trim.gif)
+![](https://quintessence-assets.s3.us-west-1.amazonaws.com/clone-san-junipero-trim-720.gif)
 
 <br />
 
@@ -75,8 +73,6 @@ If you want to clone a new repository, you can select or add a git account to do
 <br />
 
 ### Restore to original SSH configuration
-
-<br />
 
 #### Demo
 
