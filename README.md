@@ -1,3 +1,5 @@
+<br />
+
 <p align="center">A CLI created to help manage multiple <strong>Github</strong> or <strong>Gitlab</strong> accounts. This tool will configure your SSH config with multiple git accounts. You decide which account to link at the <strong>repository level</strong>.</p>
 
 <br />
@@ -38,13 +40,18 @@ If you already have an existing repository cloned locally, you can set a specifi
 
 1. Your full name will be set and used for future commits.
 2. Your primary email for the selected git account will be set and used for future commits.
-3. An sshCommand will be set, linking the appropriate SSH keys for your selected git account. This will allow SSH access to `git pull`, `git push`, `git fetch`, etc
+3. An sshCommand will be set, linking the appropriate SSH keys for your selected git account. This will allow SSH access to `git pull`, `git push`, `git fetch`, etc.
 
 > Within an existing git repository
 >
 > ```sh
 > gas
 > ```
+
+> [!IMPORTANT]
+> When setting up an account with SSH keys, your passphrase is never stored and instead passed as an argument to `ssh-keygen`.
+> You can chose whether or not you'd like to add this passphrase to your Apple Keychain.
+> If you opt out of Apple Keychain, you will be prompted to enter your passphrase when making requests to your remote repository.
 
 <br />
 
@@ -62,7 +69,7 @@ If you want to clone a new repository, you can select or add a git account to do
 
 1. Your full name will be set and used for future commits.
 2. Your primary email for the selected git account will be set and used for future commits.
-3. An sshCommand will be set, linking the appropriate SSH keys for your selected git account. This will allow SSH access to `git pull`, `git push`, `git fetch`, etc
+3. An sshCommand will be set, linking the appropriate SSH keys for your selected git account. This will allow SSH access to `git pull`, `git push`, `git fetch`, etc.
 
 > Outside of a git repository
 >
