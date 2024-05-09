@@ -1,3 +1,16 @@
+# [1.1.0](https://github.com/eric-vandenberg/git-account-switch-ssh/compare/v1.0.0...v1.1.0) (2024-05-09)
+
+
+### Bug Fixes
+
+* stdout outro prints account instead of user ([86f53f6](https://github.com/eric-vandenberg/git-account-switch-ssh/commit/86f53f6af34b8415f67fa1a1a00b964b3f45f105))
+
+
+### Features
+
+* custom bundle with tsup config ([7a593df](https://github.com/eric-vandenberg/git-account-switch-ssh/commit/7a593df2ed59047291f4027aeb7f56257a2b5362))
+* new gifs optimized ([72c9345](https://github.com/eric-vandenberg/git-account-switch-ssh/commit/72c93459c1290b956373a3c822700d1cc5d88d4d))
+
 # 1.0.0 (2024-05-08)
 
 
