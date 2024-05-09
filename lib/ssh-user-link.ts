@@ -212,8 +212,6 @@ export const ssh_user_link = async ({
   if (existing_record) {
     cancel("It looks like you've already setup this git account");
     return process.exit(0);
-  } else {
-    await gas_cache_create(cache_entry);
   }
 
   const key = await ssh_keys_create(questions);
@@ -244,6 +242,7 @@ export const ssh_user_link = async ({
     const add_keychain = keychain === KEYCHAIN_YES;
 
     await ssh_keys_add_to_agent(key, add_keychain);
+    await gas_cache_create(cache_entry);
     await ssh_config_overwrite(users, new_entry);
     await git_config_set(questions.username);
   }
