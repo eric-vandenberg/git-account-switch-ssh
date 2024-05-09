@@ -43,13 +43,14 @@ export const ssh_user_link = async ({
   let username: string;
   const options = users.map((user: IEntry) => {
     const current =
-      user.IdentityFile?.[0] && user.IdentityFile?.[0] === gitconfig.local.key;
+      user.IdentityFile?.[0] && user.IdentityFile[0] === gitconfig.local.key;
     const account = current
       ? chalk.hex(color_scheme.green).bold(user.User as string)
       : (user.User as string);
     const label = `${account}${
       user?.HostName ? ' (' + user.HostName + ')' : ''
     }`;
+
     return {
       value: user.User as string,
       label,
@@ -85,7 +86,7 @@ export const ssh_user_link = async ({
     const email = gitconfig.local.email ?? gitconfig.global.email;
 
     if (!record) {
-      const retro = await group(
+      const backfill = await group(
         {
           host: () =>
             select({
@@ -121,10 +122,10 @@ export const ssh_user_link = async ({
       );
 
       await gas_cache_create({
-        host: HOSTS[retro.host]['site'],
+        host: HOSTS[backfill.host]['site'],
         username,
-        name: retro.name,
-        email: retro.email,
+        name: backfill.name,
+        email: backfill.email,
       });
     }
 
