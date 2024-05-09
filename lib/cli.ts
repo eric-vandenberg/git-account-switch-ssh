@@ -128,7 +128,7 @@ const main = async ({ accounts, keys, gitrepo, gitconfig }: IPrechecks) => {
   }
 
   outro(
-    `User ${chalk
+    `Account ${chalk
       .hex(color_scheme.green)
       .bold(linked_user)} is all setup for repository ${chalk
       .hex(color_scheme.red)
