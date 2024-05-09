@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/eric-vandenberg/git-account-switch-ssh/compare/v1.1.0...v1.1.1) (2024-05-09)
+
+
+### Bug Fixes
+
+* only create new cache entry if keys were successfully linked ([0eb0784](https://github.com/eric-vandenberg/git-account-switch-ssh/commit/0eb078411e489a5e851eb45ee058ca4a29524275))
+
 # [1.1.0](https://github.com/eric-vandenberg/git-account-switch-ssh/compare/v1.0.0...v1.1.0) (2024-05-09)
 
 
