@@ -23,8 +23,13 @@ export const ssh_user_check = async (accounts: IEntry[]): Promise<IEntry[]> => {
         const username = username_match ? username_match[1] : undefined;
 
         if (username) {
+          const parse_user = entry.Host.split('-').pop();
           entry.User = username;
           entry.HostName = HOSTS[GITLAB]['site'];
+
+          if (parse_user === HOSTS[GITLAB]['site'] || parse_user === username) {
+            users.push(entry);
+          }
         }
       }
     } catch (error: unknown) {
@@ -37,13 +42,16 @@ export const ssh_user_check = async (accounts: IEntry[]): Promise<IEntry[]> => {
         const username = username_match ? username_match[1] : undefined;
 
         if (username) {
+          const parse_user = entry.Host.split('-').pop();
           entry.User = username;
           entry.HostName = HOSTS[GITHUB]['site'];
+
+          if (parse_user === HOSTS[GITHUB]['site'] || parse_user === username) {
+            users.push(entry);
+          }
         }
       }
     }
-
-    users.push(entry);
   }
 
   return users;
