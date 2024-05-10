@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/eric-vandenberg/git-account-switch-ssh/compare/v1.1.1...v1.1.2) (2024-05-10)
+
+
+### Bug Fixes
+
+* ignore unconnected accounts that default to global user ([d8e1409](https://github.com/eric-vandenberg/git-account-switch-ssh/commit/d8e14096cd91a828e8740cb94bdbf8bcbd6e4d3e))
+
 ## [1.1.1](https://github.com/eric-vandenberg/git-account-switch-ssh/compare/v1.1.0...v1.1.1) (2024-05-09)
 
 
