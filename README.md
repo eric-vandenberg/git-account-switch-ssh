@@ -105,10 +105,6 @@ If you'd like to restore your computer to the original SSH configuration you had
 
 MIT © Eric Vandenberg
 
-## Credit
-
-- [@oanhnn](https://twitter.com/oanhnn) for the helpful [gist](https://gist.github.com/oanhnn/80a89405ab9023894df7) explaining the problem and providing clear instructions on how to configure multiple git accounts with ssh keys
-
 ## Future Improvements
 
 - remove an account
