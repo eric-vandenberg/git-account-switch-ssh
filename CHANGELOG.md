@@ -1,3 +1,10 @@
+## [1.1.4](https://github.com/eric-vandenberg/git-account-switch-ssh/compare/v1.1.3...v1.1.4) (2024-05-12)
+
+
+### Bug Fixes
+
+* read package json from bundle ([d9f3f15](https://github.com/eric-vandenberg/git-account-switch-ssh/commit/d9f3f15a7f6fb0bd20ca9039eb87994c9c5768ac))
+
 ## [1.1.3](https://github.com/eric-vandenberg/git-account-switch-ssh/compare/v1.1.2...v1.1.3) (2024-05-12)
 
 
