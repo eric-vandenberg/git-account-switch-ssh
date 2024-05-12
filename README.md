@@ -50,8 +50,8 @@ If you already have an existing repository cloned locally, you can set a specifi
 
 > [!IMPORTANT]
 > When setting up an account with SSH keys, your passphrase is never stored and instead passed as an argument to `ssh-keygen`.
-> You can chose whether or not you'd like to add this passphrase to your Apple Keychain.
-> If you opt out of Apple Keychain, you will be prompted to enter your passphrase when making requests to your remote repository.
+> You can chose whether or not you'd like to add your passphrase to Apple Keychain.
+> If you opt out, you will be prompted to enter your passphrase when making requests to your remote repository.
 
 <br />
 
