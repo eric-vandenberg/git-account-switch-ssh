@@ -2,9 +2,10 @@
 
 import { intro, text, isCancel, cancel, spinner, outro } from '@clack/prompts';
 import gradient from 'gradient-string';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 import chalk from 'chalk';
 
-import { version, homepage } from '../package.json';
 import { IEntry } from './types/entry.js';
 import { IGitConfig } from './types/gitconfig.js';
 import { title, color_scheme } from './consts/banner.js';
@@ -26,6 +27,10 @@ interface IPrechecks {
   gitconfig: IGitConfig;
   distribution: string;
 }
+
+const { version, homepage } = JSON.parse(
+  readFileSync(path.resolve(__dirname + './../package.json'), 'utf-8')
+);
 
 const banner = async () => {
   const gasGradient = gradient(Object.values(color_scheme));

@@ -50,8 +50,8 @@ If you already have an existing repository cloned locally, you can set a specifi
 
 > [!IMPORTANT]
 > When setting up an account with SSH keys, your passphrase is never stored and instead passed as an argument to `ssh-keygen`.
-> You can chose whether or not you'd like to add this passphrase to your Apple Keychain.
-> If you opt out of Apple Keychain, you will be prompted to enter your passphrase when making requests to your remote repository.
+> You can chose whether or not you'd like to add your passphrase to Apple Keychain.
+> If you opt out, you will be prompted to enter your passphrase when making requests to your remote repository.
 
 <br />
 
@@ -104,10 +104,6 @@ If you'd like to restore your computer to the original SSH configuration you had
 ## License
 
 MIT © Eric Vandenberg
-
-## Credit
-
-- [@oanhnn](https://twitter.com/oanhnn) for the helpful [gist](https://gist.github.com/oanhnn/80a89405ab9023894df7) explaining the problem and providing clear instructions on how to configure multiple git accounts with ssh keys
 
 ## Future Improvements
 

@@ -23,11 +23,14 @@ export const ssh_user_check = async (accounts: IEntry[]): Promise<IEntry[]> => {
         const username = username_match ? username_match[1] : undefined;
 
         if (username) {
-          const parse_user = entry.Host.split('-').pop();
+          const parse_user = entry.Host.replace(
+            `${HOSTS[GITLAB]['site']}-`,
+            ''
+          );
           entry.User = username;
           entry.HostName = HOSTS[GITLAB]['site'];
 
-          if (parse_user === HOSTS[GITLAB]['site'] || parse_user === username) {
+          if (entry.Host === HOSTS[GITLAB]['site'] || parse_user === username) {
             users.push(entry);
           }
         }
@@ -42,11 +45,14 @@ export const ssh_user_check = async (accounts: IEntry[]): Promise<IEntry[]> => {
         const username = username_match ? username_match[1] : undefined;
 
         if (username) {
-          const parse_user = entry.Host.split('-').pop();
+          const parse_user = entry.Host.replace(
+            `${HOSTS[GITHUB]['site']}-`,
+            ''
+          );
           entry.User = username;
           entry.HostName = HOSTS[GITHUB]['site'];
 
-          if (parse_user === HOSTS[GITHUB]['site'] || parse_user === username) {
+          if (entry.Host === HOSTS[GITHUB]['site'] || parse_user === username) {
             users.push(entry);
           }
         }
