@@ -1,10 +1,13 @@
-import { execSync } from 'node:child_process';
-import { cancel, confirm, isCancel, note } from '@clack/prompts';
+import { execSync, exec } from 'node:child_process';
+import { promisify } from 'node:util';
+import { cancel, confirm, note } from '@clack/prompts';
 import chalk from 'chalk';
 
 import { HOSTS } from '../consts/hosts.js';
 import { TGithub, TGitlab } from '../types/symbols.js';
 import { ssh_keyscan_known_hosts } from './ssh-keyscan-known-hosts.js';
+
+const execAsync = promisify(exec);
 
 interface IKeysCreate {
   host: TGithub | TGitlab;
@@ -23,17 +26,18 @@ export const ssh_keys_create = async ({
 }: IKeysCreate): Promise<string | undefined> => {
   try {
     const key = `~/.ssh/id_ed25519_${username}`;
-    const copy_command = `pbcopy < ${key}.pub`;
 
     execSync(
       `ssh-keygen -t ed25519 -C "${email}" -f ${key} -P "${passphrase}"`
     );
 
+    const { stdout } = await execAsync(`cat ${key}.pub`);
+
     note(
       `
-      Open a new shell and run this command to copy your public key:
+      Copy your public key below:
       \n
-      ${chalk.inverse(copy_command)}
+      ${chalk.inverse(stdout)}
       \n
       Now head over to ${chalk.blue.underline(HOSTS[host]['keys'])}
       \n
