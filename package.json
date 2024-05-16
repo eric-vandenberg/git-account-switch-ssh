@@ -7,7 +7,7 @@
     "start": "jiti ./lib/cli.ts",
     "build": "tsup",
     "local": "npm run build && sudo npm i -g",
-    "reset": "rm -rf ./node_modules ./dist ./package-lock.json && npm i"
+    "reset": "rm -rf ./node_modules ./dist && npm i"
   },
   "bin": {
     "gas": "./dist/cli.js"
