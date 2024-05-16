@@ -1,3 +1,10 @@
+## [1.1.5](https://github.com/eric-vandenberg/git-account-switch-ssh/compare/v1.1.4...v1.1.5) (2024-05-16)
+
+
+### Bug Fixes
+
+* update the lock version on release ([baa1229](https://github.com/eric-vandenberg/git-account-switch-ssh/commit/baa12291a52bffab978829657c6c43d9d5bc3d30))
+
 ## [1.1.4](https://github.com/eric-vandenberg/git-account-switch-ssh/compare/v1.1.3...v1.1.4) (2024-05-12)
 
 
