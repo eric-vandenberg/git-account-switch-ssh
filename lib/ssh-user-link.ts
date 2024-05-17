@@ -33,12 +33,14 @@ interface ILinkOptions {
   project: string;
   users: IEntry[];
   gitconfig: IGitConfig;
+  distribution: string;
 }
 
 export const ssh_user_link = async ({
   project,
   users,
   gitconfig,
+  distribution,
 }: ILinkOptions): Promise<string> => {
   let username: string;
   const options = users.map((user: IEntry) => {
@@ -226,20 +228,24 @@ export const ssh_user_link = async ({
       HostName: HOSTS[questions.host]['site'],
     };
 
-    const keychain = await select({
-      message: `Do you want to save your passphrase in Apple Keychain?`,
-      options: [
-        { value: KEYCHAIN_YES, label: 'Yes', hint: 'recommended' },
-        { value: KEYCHAIN_NO, label: 'No' },
-      ],
-    });
+    let add_keychain = distribution.includes('Darwin');
 
-    if (isCancel(keychain)) {
-      cancel('Operation cancelled');
-      return process.exit(0);
+    if (add_keychain) {
+        const keychain = await select({
+        message: `Do you want to save your passphrase in Apple Keychain?`,
+        options: [
+            { value: KEYCHAIN_YES, label: 'Yes', hint: 'recommended' },
+            { value: KEYCHAIN_NO, label: 'No' },
+        ],
+        });
+
+        if (isCancel(keychain)) {
+            cancel('Operation cancelled');
+            return process.exit(0);
+        }
+
+        add_keychain = keychain === KEYCHAIN_YES;
     }
-
-    const add_keychain = keychain === KEYCHAIN_YES;
 
     await ssh_keys_add_to_agent(key, add_keychain);
     await gas_cache_create(cache_entry);
