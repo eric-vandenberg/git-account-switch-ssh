@@ -41,7 +41,10 @@ const banner = async () => {
 const init = async () => {
   const distribution = await os_check();
 
-  if (distribution === undefined || (!distribution.includes('Darwin') && !distribution.includes('Linux'))) {
+  if (
+    distribution === undefined ||
+    (!distribution.includes('Darwin') && !distribution.includes('Linux'))
+  ) {
     console.log(
       `Your OS is currently not supported! 🙏 See ${chalk.blue.underline(
         homepage
@@ -67,7 +70,13 @@ const init = async () => {
   };
 };
 
-const main = async ({ accounts, keys, gitrepo, gitconfig, distribution }: IPrechecks) => {
+const main = async ({
+  accounts,
+  keys,
+  gitrepo,
+  gitconfig,
+  distribution,
+}: IPrechecks) => {
   let linked_user;
   let project: string = '';
   const is_restore = process.argv?.[2] === 'restore';
@@ -126,7 +135,7 @@ const main = async ({ accounts, keys, gitrepo, gitconfig, distribution }: IPrech
       project,
       users,
       gitconfig: gitconfig,
-      distribution
+      distribution,
     });
 
     await clone_repo_user_link({

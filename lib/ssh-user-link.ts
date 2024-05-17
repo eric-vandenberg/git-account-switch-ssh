@@ -231,20 +231,20 @@ export const ssh_user_link = async ({
     let add_keychain = distribution.includes('Darwin');
 
     if (add_keychain) {
-        const keychain = await select({
+      const keychain = await select({
         message: `Do you want to save your passphrase in Apple Keychain?`,
         options: [
-            { value: KEYCHAIN_YES, label: 'Yes', hint: 'recommended' },
-            { value: KEYCHAIN_NO, label: 'No' },
+          { value: KEYCHAIN_YES, label: 'Yes', hint: 'recommended' },
+          { value: KEYCHAIN_NO, label: 'No' },
         ],
-        });
+      });
 
-        if (isCancel(keychain)) {
-            cancel('Operation cancelled');
-            return process.exit(0);
-        }
+      if (isCancel(keychain)) {
+        cancel('Operation cancelled');
+        return process.exit(0);
+      }
 
-        add_keychain = keychain === KEYCHAIN_YES;
+      add_keychain = keychain === KEYCHAIN_YES;
     }
 
     await ssh_keys_add_to_agent(key, add_keychain);
