@@ -1,3 +1,16 @@
+# [1.2.0](https://github.com/eric-vandenberg/git-account-switch-ssh/compare/v1.1.5...v1.2.0) (2024-05-17)
+
+
+### Bug Fixes
+
+* formatting ([f381d7b](https://github.com/eric-vandenberg/git-account-switch-ssh/commit/f381d7b46690a392bb2954a20a177c848861cd5b))
+
+
+### Features
+
+* add editorconfig ([0d9027e](https://github.com/eric-vandenberg/git-account-switch-ssh/commit/0d9027ed0b98f6e29be8994e7202396e5f1c9747))
+* add prettierrc ([f10d9ee](https://github.com/eric-vandenberg/git-account-switch-ssh/commit/f10d9eee0d110c4d0a6a05799e6573f5372bf92e))
+
 ## [1.1.5](https://github.com/eric-vandenberg/git-account-switch-ssh/compare/v1.1.4...v1.1.5) (2024-05-16)
 
 

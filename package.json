@@ -1,6 +1,6 @@
 {
   "name": "git-account-switch-ssh",
-  "version": "1.1.5",
+  "version": "1.2.0",
   "description": "Git Account Switch (SSH)",
   "main": "./dist/cli.js",
   "scripts": {
