@@ -1,3 +1,15 @@
+## [1.2.1](https://github.com/eric-vandenberg/git-account-switch-ssh/compare/v1.2.0...v1.2.1) (2024-05-18)
+
+
+### Bug Fixes
+
+* triggering build with minor cleanup ([40cbc97](https://github.com/eric-vandenberg/git-account-switch-ssh/commit/40cbc97a7ae779a7b9ae6da61837fbfa81fea458))
+
+
+### Reverts
+
+* removing linux support since printing key breaks instructions note ([b5e5b34](https://github.com/eric-vandenberg/git-account-switch-ssh/commit/b5e5b348a5fccb2a57e69212b3ba22375d82599a))
+
 # [1.2.0](https://github.com/eric-vandenberg/git-account-switch-ssh/compare/v1.1.5...v1.2.0) (2024-05-17)
 
 
