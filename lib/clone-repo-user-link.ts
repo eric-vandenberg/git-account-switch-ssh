@@ -35,7 +35,7 @@ export const clone_repo_user_link = async ({
         `
       Repository cloned
       \n
-      ${chalk.inverse('cd ') + chalk.inverse(project)}
+      ${chalk.inverse(`cd ${project}`)}
       \n
     `,
         'Success'
