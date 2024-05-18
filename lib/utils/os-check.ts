@@ -3,10 +3,14 @@ import { promisify } from 'node:util';
 
 const execAsync = promisify(exec);
 
-export const os_check = async (): Promise<string | undefined> => {
+export const os_check = async (): Promise<boolean> => {
   try {
-    const { stdout } = await execAsync('uname -s');
+    const unix = await execAsync('uname -s')
+      .then(({ stdout }) => stdout.includes('Darwin'))
+      .catch(() => false);
 
-    return stdout;
-  } catch (error: unknown) {}
+    return unix;
+  } catch (error: unknown) {
+    return false;
+  }
 };
