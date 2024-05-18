@@ -25,7 +25,6 @@ interface IPrechecks {
   keys: string[];
   gitrepo: string;
   gitconfig: IGitConfig;
-  distribution: string;
 }
 
 const { version, homepage } = JSON.parse(
@@ -39,14 +38,11 @@ const banner = async () => {
 };
 
 const init = async () => {
-  const distribution = await os_check();
+  const unix = await os_check();
 
-  if (
-    distribution === undefined ||
-    (!distribution.includes('Darwin') && !distribution.includes('Linux'))
-  ) {
+  if (!unix) {
     console.log(
-      `Your OS is currently not supported! 🙏 See ${chalk.blue.underline(
+      `MacOS support only. 🙏 See ${chalk.blue.underline(
         homepage
       )} to contribute.`
     );
@@ -66,17 +62,10 @@ const init = async () => {
     keys,
     gitrepo,
     gitconfig,
-    distribution,
   };
 };
 
-const main = async ({
-  accounts,
-  keys,
-  gitrepo,
-  gitconfig,
-  distribution,
-}: IPrechecks) => {
+const main = async ({ accounts, keys, gitrepo, gitconfig }: IPrechecks) => {
   let linked_user;
   let project: string = '';
   const is_restore = process.argv?.[2] === 'restore';
@@ -116,7 +105,6 @@ const main = async ({
       project,
       users,
       gitconfig: gitconfig,
-      distribution,
     });
   } else {
     const repository = await text({
@@ -135,7 +123,6 @@ const main = async ({
       project,
       users,
       gitconfig: gitconfig,
-      distribution,
     });
 
     await clone_repo_user_link({
