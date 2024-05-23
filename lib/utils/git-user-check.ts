@@ -1,10 +1,7 @@
 import { homedir } from 'node:os';
-import { promisify } from 'node:util';
-import { access, readFileSync, constants } from 'node:fs';
+import { accessSync, readFileSync, constants } from 'node:fs';
 
 import { IGitConfig } from '../types/gitconfig.js';
-
-const accessAsync = promisify(access);
 
 export const git_user_check = async (path: string): Promise<IGitConfig> => {
   const home = homedir();
@@ -23,21 +20,22 @@ export const git_user_check = async (path: string): Promise<IGitConfig> => {
     },
   };
 
-  accessAsync(global_path, constants.R_OK | constants.W_OK).catch((error) => {
+  try {
+    accessSync(global_path, constants.R_OK | constants.W_OK);
+  } catch (error: unknown) {
     const message = (error as Error).message;
-
     if (message.includes(global_path)) {
       skip_global = true;
     }
-  });
-
-  accessAsync(local_path, constants.R_OK | constants.W_OK).catch((error) => {
+  }
+  try {
+    accessSync(local_path, constants.R_OK | constants.W_OK);
+  } catch (error: unknown) {
     const message = (error as Error).message;
-
     if (message.includes(local_path)) {
       skip_local = true;
     }
-  });
+  }
 
   const eregex = /email\s=\s(.*?)$/ms;
   const uregex = /name\s=\s(.*?)$/ms;
