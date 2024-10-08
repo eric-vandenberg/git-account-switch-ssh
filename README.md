@@ -123,4 +123,9 @@ MIT © Eric Vandenberg
   - generate keys with unique identifier
   - find and replace in ssh config
 
+- GPG keys
+  - add GPG keys
+  - sign commits
+  - sign tags
+
 <br />
