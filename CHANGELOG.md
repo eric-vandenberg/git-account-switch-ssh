@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/eric-vandenberg/git-account-switch-ssh/compare/v1.2.2...v1.2.3) (2024-10-08)
+
+
+### Bug Fixes
+
+* deploy ([#53](https://github.com/eric-vandenberg/git-account-switch-ssh/issues/53)) ([c5bd84f](https://github.com/eric-vandenberg/git-account-switch-ssh/commit/c5bd84fffc2da61dc62e41458cbef88de5d1146e))
+
 ## [1.2.2](https://github.com/eric-vandenberg/git-account-switch-ssh/compare/v1.2.1...v1.2.2) (2024-09-26)
 
 
