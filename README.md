@@ -16,9 +16,9 @@ npm i -g git-account-switch-ssh
 
 <br />
 
-- Add a git account and setup SSH keys
-- Link an account per repository
-- Clone a repository per account
+- Adds git accounts and creates SSH keys
+- Links an account per repository
+- Clones repositories per account
 
 <br />
 
