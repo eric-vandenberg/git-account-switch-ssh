@@ -42,7 +42,7 @@
     "@types/gradient-string": "^1.1.6",
     "@types/node": "^20.12.2",
     "jiti": "^1.21.0",
-    "semantic-release": "^23.0.8",
+    "semantic-release": "^24.2.4",
     "tsup": "^8.0.2",
     "typescript": "^5.4.3"
   },
